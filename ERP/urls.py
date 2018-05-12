@@ -1,0 +1,39 @@
+"""ERP URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+
+from django.conf.urls import url, include
+from rest_framework import routers
+from authentication import views
+from states import views
+from company import views
+from company_branch import views
+from purchaseorggroup import views
+from salesorg_group import views
+from material_master import views
+
+urlpatterns = [
+
+    path('', include('authentication.urls')),
+    path('', include('states.urls')),
+    path('', include('company.urls')),
+    path('', include('company_branch.urls')),
+    path('', include('purchaseorggroup.urls')),
+    path('', include('salesorg_group.urls')),
+    path('', include('material_master.urls')),
+    path('admin/', admin.site.urls),
+]
