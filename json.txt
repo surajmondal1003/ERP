@@ -1,0 +1,125 @@
+{
+    "material_fullname": "AC",
+    "material_type": 1,
+    "material_code": "A001",
+    "description": "Demo",
+    "is_taxable": true,
+    "is_sales": true,
+    "status": true,
+    "material_uom": [
+     {   
+            "material_for": "1",
+            "base_uom": 1,
+            "unit_per_uom":100,
+            "unit_uom":1
+
+        },
+        {   
+            "material_for": "2",
+            "base_uom": 1,
+            "unit_per_uom":100,
+            "unit_uom":1
+
+        }
+
+],
+    "material_tax": [
+    {
+               "tax_for":"1",
+                "igst":18,
+                "cgst":9,
+                 "sgst":9,
+                 "hsn":"HA001"
+            },
+            {
+               "tax_for":"2",
+                "igst":18,
+                "cgst":9,
+                 "sgst":9,
+                 "hsn":"HA001"
+            }
+
+],
+
+"material_pur_org": [
+           {
+               "pur_org":1
+     
+            }
+],
+
+"material_pur_grp": [
+           {
+               "pur_group":1
+     
+            }
+]
+
+}
+
+
+
+
+
+
+
+
+Without Tax
+
+
+{
+    "id": 28,
+    "material_fullname": "AC",
+    "material_type": 1,
+    "material_code": "A001",
+    "description": "Demo",
+    "is_taxable": false,
+    "is_sales": true,
+    "status": true,
+    "created_at": "2018-05-13T14:56:52.467692Z",
+    "material_uom": [
+        {
+            "id": 51,
+            "material_for": "1",
+            "base_uom": 1,
+            "unit_per_uom": "100.00",
+            "unit_uom": 1
+        },
+        {
+            "id": 52,
+            "material_for": "2",
+            "base_uom": 1,
+            "unit_per_uom": "100.00",
+            "unit_uom": 1
+        }
+    ],
+    "material_tax": []
+}
+
+
+Without Tax and sales
+
+
+{
+    "id": 28,
+    "material_fullname": "AC",
+    "material_type": 1,
+    "material_code": "A001",
+    "description": "Demo",
+    "is_taxable": false,
+    "is_sales": false,
+    "status": true,
+    "created_at": "2018-05-13T14:56:52.467692Z",
+    "material_uom": [
+        {
+            "id": 51,
+            "material_for": "1",
+            "base_uom": 1,
+            "unit_per_uom": "100.00",
+            "unit_uom": 1
+        }
+        
+    ],
+    "material_tax": []
+}
+

@@ -29,6 +29,11 @@ class Material(models.Model):
     def __str__(self):
         return str(self.material_fullname)
 
+    def material_pur_org(self):
+        return MaterialPurchaseOrg.objects.filter(material=self)
+    def material_pur_grp(self):
+        return MaterialPurchaseGroup.objects.filter(material=self)
+
 
 class Material_UOM(models.Model):
     MATERIAL_CHOICES = (
