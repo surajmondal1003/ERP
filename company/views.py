@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveUpdateAPIView,ListAPIView
 from rest_framework import viewsets, status
-from company.models import Company
+from company.models import Company,TermsandConditon
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -13,7 +13,8 @@ from authentication.pagination import ErpLimitOffestpagination, ErpPageNumberPag
 
 from company.serializers import (
     CompanySerializer,
-    CompanyListSerializer
+    CompanyListSerializer,
+    TermsAndConditionSerializer
 
 )
 
@@ -37,5 +38,37 @@ class CompanyListView(ListAPIView):
     serializer_class = CompanyListSerializer
     #permission_classes = [IsAuthenticated, IsAdminUser]
     authentication_classes = [TokenAuthentication]
+
+
+class TermsAndConditionsViewSet(viewsets.ModelViewSet):
+    queryset = TermsandConditon.objects.all()
+    serializer_class =TermsAndConditionSerializer
+    #permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+    pagination_class = ErpPageNumberPagination
+
+
+class TermsAndConditionsDropdown(ListAPIView):
+    queryset = TermsandConditon.objects.all()
+    serializer_class =TermsAndConditionSerializer
+    #permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+
+
+
+
+class PurchaseOrganisationSpecificCompanyList(ListAPIView):
+    queryset = Company.objects.all()
+    serializer_class = CompanyListSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    #authentication_classes = [TokenAuthentication]
+    lookup_field = ('org_id')
+
+    def get_queryset(self):
+        org_id = self.kwargs['org_id']
+        return Company.objects.filter(company_branch__purchaseorgmapping__pur_org_id=org_id)
+
+
 
 

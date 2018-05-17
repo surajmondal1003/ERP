@@ -25,3 +25,23 @@ class Company(models.Model):
     def __str__(self):
         return str(self.company_name)
 
+
+
+class TermsandConditon(models.Model):
+    TERM_CHOICES = (
+        ('1', 'Payment'),
+        ('2', 'Delivery'),
+        ('3', 'Others'),
+    )
+
+    company=models.ForeignKey(Company,on_delete=models.CASCADE)
+    term_type = models.CharField(max_length=1, choices=TERM_CHOICES, default=None,blank=True,null=True)
+    term_text=models.TextField()
+    status = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.company.company_name)
+
+

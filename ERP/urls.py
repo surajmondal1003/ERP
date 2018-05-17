@@ -25,6 +25,14 @@ from company_branch import views
 from purchaseorggroup import views
 from salesorg_group import views
 from material_master import views
+from purchase_requisition import views
+from gstrates import views
+from transporter import views
+from vendor import views
+from banks import views
+from purchase_order import views
+from grn import views
+from purchase_invoice import views
 
 urlpatterns = [
 
@@ -35,5 +43,13 @@ urlpatterns = [
     path('', include('purchaseorggroup.urls')),
     path('', include('salesorg_group.urls')),
     path('', include('material_master.urls')),
+    path('', include('purchase_requisition.urls')),
+    path('', include('gstrates.urls')),
+    path('', include('transporter.urls')),
+    path('', include('vendor.urls')),
+    path('', include('banks.urls')),
+    path('', include('purchase_order.urls')),
+    path('', include('grn.urls')),
+    path('', include('purchase_invoice.urls')),
     path('admin/', admin.site.urls),
 ]

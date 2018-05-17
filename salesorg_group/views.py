@@ -39,5 +39,7 @@ class SalesGroupViewSet(viewsets.ModelViewSet):
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
 
 

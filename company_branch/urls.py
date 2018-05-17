@@ -15,6 +15,9 @@ urlpatterns = [
     path('company_branch/<company>/',views.SpecificCompanyBranchView.as_view()),
     path('company_storage/<company>/',views.SpecificCompanyStorageView.as_view()),
     path('company_storagebin/<company>/',views.SpecificCompanyStorageBinView.as_view()),
+    path('company_branch_dropdown/<company>/',views.SpecificCompanyBranchDropdown.as_view()),
+    path('company_storage_dropdown/<company>/',views.SpecificCompanyStorageDropdown.as_view()),
+    path('company_storagebin_dropdown/<company>/',views.SpecificCompanyStorageBinDropdown.as_view()),
 
 ]
 

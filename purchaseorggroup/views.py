@@ -97,16 +97,18 @@ class CompanyBranchTreeView(ListAPIView):
 
 
 class PurchaseOrgCheckList(ListAPIView):
-    queryset = PurchaseOrg.objects.all()
+    queryset = PurchaseOrg.objects.filter(status=True)
     serializer_class = PurchaseOrgSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
 
 class PurchaseGroupCheckList(ListAPIView):
-    queryset = PurchaseGroup.objects.all()
+    queryset = PurchaseGroup.objects.filter(status=True)
     serializer_class = PurchaseGroupSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
+
+
 
 
 

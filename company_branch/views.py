@@ -20,6 +20,9 @@ from company_branch.serializers import (
 from django.contrib.auth.models import User
 from company.models import Company
 from company_branch.models import CompanyBranch,StorageLocation,UOM,StorageBin
+from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import filters
+from rest_framework import filters
 
 
 # Create your views here.
@@ -29,6 +32,9 @@ class CompanyBranchViewSet(viewsets.ModelViewSet):
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('branch_name',)
+
 
 
 
@@ -91,3 +97,43 @@ class SpecificCompanyStorageBinView(ListAPIView):
     def get_queryset(self):
         company=self.kwargs['company']
         return StorageBin.objects.filter(company_id=company)
+
+
+
+
+class SpecificCompanyBranchDropdown(ListAPIView):
+
+    serializer_class = CompanyBranchSerializer
+    #permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+
+    def get_queryset(self):
+        company=self.kwargs['company']
+        return CompanyBranch.objects.filter(company_id=company,status=True)
+
+
+
+class SpecificCompanyStorageDropdown(ListAPIView):
+
+    serializer_class = CompanyStorageSerializer
+    #permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+
+    def get_queryset(self):
+        company=self.kwargs['company']
+        return StorageLocation.objects.filter(company_id=company,status=True)
+
+
+class SpecificCompanyStorageBinDropdown(ListAPIView):
+
+    serializer_class = CompanyStorageBinSerializer
+    #permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+
+    def get_queryset(self):
+        company=self.kwargs['company']
+        return StorageBin.objects.filter(company_id=company,status=True)
+

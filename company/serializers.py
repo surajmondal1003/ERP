@@ -1,4 +1,4 @@
-from company.models import Company
+from company.models import Company,TermsandConditon
 from states.models import State
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
@@ -36,3 +36,15 @@ class CompanyListSerializer(ModelSerializer):
     class Meta:
         model = Company
         fields = ['id','company_name']
+
+
+
+
+class TermsAndConditionSerializer(ModelSerializer):
+
+    created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    status = serializers.BooleanField(default=True)
+
+    class Meta:
+        model = TermsandConditon
+        fields = ['id','company','term_type','term_text','status','created_at','created_by']

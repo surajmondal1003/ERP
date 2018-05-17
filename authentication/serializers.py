@@ -12,3 +12,14 @@ class UserLoginSerializer(ModelSerializer):
 
         ]
 
+
+class UserReadSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'first_name',
+
+
+        ]
+
