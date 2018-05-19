@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -14,6 +14,7 @@ from rest_framework import filters
 
 from purchase_invoice.serializers import (
     PurchaseInvoiceSerializer,
+    PurchaseInvoiceReadSerializer
 
 )
 from django.contrib.auth.models import User
@@ -26,10 +27,19 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 class PurchaseInvoiceReadView(ListAPIView):
     queryset = PurchaseInvoice.objects.all()
-    serializer_class = PurchaseInvoiceSerializer
+    serializer_class = PurchaseInvoiceReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+
+
+
+class PurchaseInvoiceReadDetailView(RetrieveAPIView):
+    queryset = PurchaseInvoice.objects.all()
+    serializer_class = PurchaseInvoiceReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
 
 
 class PurchaseInvoiceMatser(ListCreateAPIView):
@@ -45,3 +55,16 @@ class PurchaseInvoiceUpdate(RetrieveUpdateDestroyAPIView):
     serializer_class = PurchaseInvoiceSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
+
+
+
+class CompanySpecificPurchaseInvoiceDropdown(ListAPIView):
+    queryset = PurchaseInvoice.objects.all()
+    serializer_class = PurchaseInvoiceReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+    def get_queryset(self):
+        company=self.kwargs['company']
+        return PurchaseInvoice.objects.filter(company=company,status=True)
+

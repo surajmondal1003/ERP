@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from company_branch.models import CompanyBranch,StorageLocation,StorageBin,UOM
 from material_master.models import Material,Material_UOM
 from gstrates.models import GSTrates
+from purchase_requisition.models import RequisitionMap
 
 
 # Create your models here.
@@ -37,6 +38,13 @@ class PurchaseOrder(models.Model):
 
     def __str__(self):
         return str(self.created_at)
+
+
+    def requisition_no(self):
+        return RequisitionMap.objects.filter(requisition=self.requisition)
+
+
+
 
 
 class PurchaseOrderDetail(models.Model):

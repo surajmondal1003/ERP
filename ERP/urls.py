@@ -33,6 +33,7 @@ from banks import views
 from purchase_order import views
 from grn import views
 from purchase_invoice import views
+from payment import views
 
 urlpatterns = [
 
@@ -51,5 +52,6 @@ urlpatterns = [
     path('', include('purchase_order.urls')),
     path('', include('grn.urls')),
     path('', include('purchase_invoice.urls')),
+    path('', include('payment.urls')),
     path('admin/', admin.site.urls),
 ]

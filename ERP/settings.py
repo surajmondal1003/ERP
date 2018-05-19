@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     'account_transaction',
     'purchase_order',
     'grn',
-    'purchase_invoice'
+    'purchase_invoice',
+    'payment'
+
 
 ]
 

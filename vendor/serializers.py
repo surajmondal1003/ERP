@@ -101,4 +101,9 @@ class VendorSerializer(ModelSerializer):
 
 
 
+class VendorNameSerializer(ModelSerializer):
+
+    class Meta:
+        model = Vendor
+        fields = ['id','vendor_fullname']
 

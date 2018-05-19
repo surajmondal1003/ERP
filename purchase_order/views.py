@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -16,6 +16,7 @@ from purchase_order.serializers import (
     PurchaseOrderSerializer,
     PurchaseDetailSerializer,
     PurchaseFreightSerializer,
+    PurchaseOrderReadSerializer
 
 
 
@@ -29,16 +30,25 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 class PurchaseOrderReadView(ListAPIView):
     queryset = PurchaseOrder.objects.all()
-    serializer_class = PurchaseOrderSerializer
+    serializer_class = PurchaseOrderReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
 
 
+class PurchaseOrderReadDetailView(RetrieveAPIView):
+    queryset = PurchaseOrder.objects.all()
+    serializer_class = PurchaseOrderReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+
+
+
 
 class PurchaseOrderReadDropdown(ListAPIView):
     queryset = PurchaseOrder.objects.filter(status=True)
-    serializer_class = PurchaseOrderSerializer
+    serializer_class = PurchaseOrderReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
 

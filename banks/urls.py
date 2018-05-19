@@ -10,6 +10,7 @@ router.register(r'banks', views.BankViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('company_specific_bank_dropdown/<company>/',views.SpecificCompanyBankDropdown.as_view()),
 
 
 ]

@@ -110,3 +110,6 @@ class RequisitionReadSerializer(ModelSerializer):
         fields = ['id','company','purchase_org','purchase_grp','special_note','is_approve','is_finalised','status','created_at','created_by',
                   'requisition_detail','requisition_map']
 
+
+
+

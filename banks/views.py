@@ -33,3 +33,15 @@ class BankViewSet(viewsets.ModelViewSet):
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('bank_name',)
+
+
+
+
+class SpecificCompanyBankDropdown(ListAPIView):
+    serializer_class =BankSerializer
+    #permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
+    def get_queryset(self):
+        company=self.kwargs['company']
+        return Bank.objects.filter(company_id=company,status=True)

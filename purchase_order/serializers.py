@@ -6,6 +6,19 @@ import datetime
 
 from purchase_order.models import PurchaseOrderTerms,PurchaseOrderMap,PurchaseOrderFreight,PurchaseOrderDetail,PurchaseOrder
 
+from company.serializers import CompanyListSerializer,TermsAndConditionSerializer
+from purchaseorggroup.serializers import PurchaseOrgSerializer,PurchaseGroupSerializer
+from authentication.serializers import UserReadSerializer
+from purchase_requisition.serializers import RequisitionMapSerializer
+from company_branch.serializers import CompanyBranchSerializer,CompanyStorageBinSerializer,CompanyStorageSerializer
+from material_master.serializers import MaterialNameSerializer
+
+from rest_framework.relations import StringRelatedField
+from vendor.serializers import VendorAddressSerializer,VendorNameSerializer
+
+
+
+
 
 
 class PurchaseTermsSerializer(ModelSerializer):
@@ -96,3 +109,91 @@ class PurchaseOrderSerializer(ModelSerializer):
             return instance
 
 
+
+
+class PurchaseDetailReadSerializer(ModelSerializer):
+    company_branch=CompanyBranchSerializer(read_only=True)
+    storage_location=CompanyStorageSerializer(read_only=True)
+    storage_bin=CompanyStorageBinSerializer(read_only=True)
+    material=MaterialNameSerializer(read_only=True)
+
+    class Meta:
+        model = PurchaseOrderDetail
+        fields = ['id','company_branch','storage_location','storage_bin','material','uom','requisition_quantity',
+                  'order_quantity', 'rate', 'material_value', 'discount_percent', 'discount_value', 'igst',
+                  'cgst','sgst', 'gst_amount', 'sub_total', 'delivery_date']
+
+
+
+class PurchseTermsReadSerializer(ModelSerializer):
+    po_terms=TermsAndConditionSerializer(read_only=True)
+
+    class Meta:
+        model = PurchaseOrderTerms
+        fields = ['id','po_terms']
+
+
+
+
+
+
+class PurchaseOrderReadSerializer(ModelSerializer):
+    requisition_no=RequisitionMapSerializer(many=True)
+    company=CompanyListSerializer()
+    pur_org=PurchaseOrgSerializer()
+    pur_grp=PurchaseGroupSerializer()
+    created_by=UserReadSerializer()
+    purchase_order_detail = PurchaseDetailReadSerializer(many=True)
+    purchase_order_freight = PurchaseFreightSerializer(many=True)
+    purchase_order_terms = PurchseTermsReadSerializer(many=True)
+    purchase_order_map=PurchaseMapSerializer(many=True)
+    vendor=VendorNameSerializer(read_only=True)
+    vendor_address=VendorAddressSerializer(read_only=True)
+
+
+
+    class Meta:
+        model = PurchaseOrder
+        fields = ['id','requisition_no','quotation_no','quotation_date','pur_org','pur_grp','company','vendor','vendor_address',
+                  'grand_total','grand_total_words','is_approve','is_finalised','status','created_at','created_by',
+                  'purchase_order_detail','purchase_order_freight','purchase_order_terms','purchase_order_map']
+
+
+
+
+
+class PurchaseDetailReadForGRNSerializer(ModelSerializer):
+    # company_branch=CompanyBranchSerializer(read_only=True)
+    # storage_location=CompanyStorageSerializer(read_only=True)
+    # storage_bin=CompanyStorageBinSerializer(read_only=True)
+    material=MaterialNameSerializer(read_only=True)
+
+    class Meta:
+        model = PurchaseOrderDetail
+        fields = ['id','company_branch','storage_location','storage_bin','material','uom','requisition_quantity',
+                  'order_quantity', 'rate', 'material_value', 'discount_percent', 'discount_value', 'igst',
+                  'cgst','sgst', 'gst_amount', 'sub_total', 'delivery_date']
+
+
+
+
+
+
+class PurchaseOrderReadForGRNSerializer(ModelSerializer):
+    # requisition_no=RequisitionMapSerializer(many=True)
+    # company=CompanyListSerializer()
+    # pur_org=PurchaseOrgSerializer()
+    # pur_grp=PurchaseGroupSerializer()
+    # created_by=UserReadSerializer()
+    purchase_order_detail = PurchaseDetailReadSerializer(many=True)
+    # purchase_order_freight = PurchaseFreightSerializer(many=True)
+    # purchase_order_terms = PurchseTermsReadSerializer(many=True)
+    # purchase_order_map=PurchaseMapSerializer(many=True)
+    # vendor=VendorNameSerializer(read_only=True)
+    # vendor_address=VendorAddressSerializer(read_only=True)
+
+
+
+    class Meta:
+        model = PurchaseOrder
+        fields = ['id','purchase_order_detail','purchase_order_map']

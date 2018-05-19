@@ -6,9 +6,22 @@ import datetime
 from grn.models import GRN,GRNDetail,GRNMap
 from django.contrib.auth.models import User
 from vendor.serializers import VendorAddressSerializer
-from purchase_order.serializers import PurchaseMapSerializer
+from purchase_order.serializers import (
+    PurchaseMapSerializer,
+    PurchaseOrderSerializer,
+    PurchaseDetailSerializer,
+    PurchaseOrderReadSerializer,
+    PurchaseOrderReadForGRNSerializer
+)
+
 
 from rest_framework.relations import StringRelatedField
+from material_master.serializers import MaterialNameSerializer
+from vendor.serializers import VendorNameSerializer
+from purchaseorggroup.serializers import PurchaseOrgSerializer,PurchaseGroupSerializer
+from company.serializers import CompanyListSerializer
+from company_branch.serializers import CompanyBranchSerializer,CompanyStorageBinSerializer,CompanyStorageSerializer,UOMSerializer
+from authentication.serializers import UserReadSerializer
 
 
 class GRNMapSerializer(ModelSerializer):
@@ -62,15 +75,34 @@ class GRNSerializer(ModelSerializer):
 
 
 
+class GRNDetailReadSerializer(ModelSerializer):
+    material = MaterialNameSerializer(read_only=True)
+    company_branch = CompanyBranchSerializer(read_only=True)
+    storage_location = CompanyStorageSerializer(read_only=True)
+    storage_bin = CompanyStorageBinSerializer(read_only=True)
+    uom = UOMSerializer(read_only=True)
+
+    class Meta:
+        model = GRNDetail
+        fields = ['id','material','uom','order_quantity','receive_quantity','company_branch','storage_location',
+                  'storage_bin']
+
+
+
+
 class GRNReadSerializer(ModelSerializer):
 
     purchase_order_no=PurchaseMapSerializer(read_only=True,many=True)
-    company=StringRelatedField()
-    pur_org=StringRelatedField()
-    pur_grp=StringRelatedField()
-    vendor=StringRelatedField()
+    po_order=PurchaseOrderReadForGRNSerializer(read_only=True)
+    company=CompanyListSerializer()
+    pur_org=PurchaseOrgSerializer()
+    pur_grp=PurchaseGroupSerializer()
+    vendor=VendorNameSerializer(read_only=True)
     vendor_address=VendorAddressSerializer()
     grn_map=GRNMapSerializer(read_only=True,many=True)
+    grn_detail = GRNDetailReadSerializer(many=True)
+    created_by = UserReadSerializer()
+
 
     class Meta:
         model = GRN
@@ -78,3 +110,12 @@ class GRNReadSerializer(ModelSerializer):
                   'check_post','challan_no','challan_date','is_approve','is_finalised','status','created_at',
                   'created_by','grn_detail','grn_map']
 
+
+
+
+class GRNCreateBySerializer(ModelSerializer):
+    created_by = UserReadSerializer()
+
+    class Meta:
+        model = GRN
+        fields = ['id','created_at','created_by']

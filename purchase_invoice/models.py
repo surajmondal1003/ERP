@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from grn.models import GRN
-from purchase_order.models import PurchaseOrder
+from grn.models import GRN,GRNMap,GRNDetail
+from purchase_order.models import PurchaseOrder,PurchaseOrderMap
 from purchaseorggroup.models import PurchaseOrg,PurchaseGroup
 from vendor.models import Vendor,VendorAddress
 from company.models import Company
@@ -34,6 +34,18 @@ class PurchaseInvoice(models.Model):
 
     def __str__(self):
         return str(self.created_at)
+
+
+    def grn_number(self):
+        return GRNMap.objects.filter(grn=self.grn)
+
+    def po_order_no(self):
+        return PurchaseOrderMap.objects.filter(po_order=self.po_order)
+
+    def grn_material(self):
+        return GRNDetail.objects.filter(grn=self.grn)
+
+
 
 
 

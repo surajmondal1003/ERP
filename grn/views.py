@@ -35,6 +35,16 @@ class GRNReadViewList(ListAPIView):
 
 
 
+
+class GRNReadViewDropdown(ListAPIView):
+    queryset = GRN.objects.filter(status=True)
+    serializer_class = GRNReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+
+
+
 class GRNReadViewDetail(RetrieveAPIView):
     queryset = GRN.objects.all()
     serializer_class = GRNReadSerializer

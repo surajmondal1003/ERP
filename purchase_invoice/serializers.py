@@ -6,6 +6,9 @@ import datetime
 
 from purchase_invoice.models import PurchaseInvoice,PurchaseInvoiceDetail,PurchaseInvoiceMap
 from django.contrib.auth.models import User
+from grn.serializers import GRNMapSerializer,GRNDetailReadSerializer,GRNReadSerializer,GRNCreateBySerializer
+from purchase_order.serializers import PurchaseMapSerializer
+from company.serializers import CompanyListSerializer
 
 
 class PurchaseInvoiceMapSerializer(ModelSerializer):
@@ -60,3 +63,25 @@ class PurchaseInvoiceSerializer(ModelSerializer):
 
 
 
+
+
+
+
+
+
+
+class PurchaseInvoiceReadSerializer(ModelSerializer):
+
+
+    grn= GRNCreateBySerializer(read_only=True)
+    grn_number = GRNMapSerializer(read_only=True,many=True)
+    pur_invoice_detail=PurchaseInvoiceDetailSerializer(many=True)
+    pur_invoice_map=PurchaseInvoiceMapSerializer(many=True)
+    po_order_no = PurchaseMapSerializer(many=True,read_only=True)
+    company = CompanyListSerializer()
+
+    class Meta:
+        model = PurchaseInvoice
+        fields = ['id','grn','grn_number','po_order','po_order_no','pur_org','pur_grp','total_gst','total_amount','vendor','vendor_address',
+                  'company','is_approve','is_finalised','status','created_at','created_by',
+                  'pur_invoice_detail','pur_invoice_map']
