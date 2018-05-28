@@ -10,7 +10,9 @@ urlpatterns = [
     path('all_grn/<pk>/',views.GRNReadViewDetail.as_view()),
     path('grn/', views.GRNCreate.as_view()),
     path('grn/<pk>/', views.GRNUpdate.as_view()),
+    path('grn_status/<pk>/', views.GRNUpdateStatus.as_view()),
     path('grn_dropdown/', views.GRNReadViewDropdown.as_view()),
+    path('purchase_order_grn/<po_order>/', views.GRNByPurchaseOrder.as_view()),
 
 
 ]

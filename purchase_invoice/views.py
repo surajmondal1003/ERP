@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView,RetrieveUpdateAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -14,7 +14,9 @@ from rest_framework import filters
 
 from purchase_invoice.serializers import (
     PurchaseInvoiceSerializer,
-    PurchaseInvoiceReadSerializer
+    PurchaseInvoiceReadSerializer,
+    InvoiceUpdateStatusSerializer
+
 
 )
 from django.contrib.auth.models import User
@@ -59,6 +61,7 @@ class PurchaseInvoiceUpdate(RetrieveUpdateDestroyAPIView):
 
 
 class CompanySpecificPurchaseInvoiceDropdown(ListAPIView):
+    # queryset = PurchaseInvoice.objects.filter(status=True, is_approve=1, is_finalised=0)
     queryset = PurchaseInvoice.objects.all()
     serializer_class = PurchaseInvoiceReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
@@ -66,5 +69,9 @@ class CompanySpecificPurchaseInvoiceDropdown(ListAPIView):
 
     def get_queryset(self):
         company=self.kwargs['company']
-        return PurchaseInvoice.objects.filter(company=company,status=True)
+        return PurchaseInvoice.objects.filter(company=company, status=True, is_approve=1 , is_finalised=0 )
 
+
+class PurchaseInvoiceUpdateStatus(RetrieveUpdateAPIView):
+    queryset = PurchaseInvoice.objects.all()
+    serializer_class = InvoiceUpdateStatusSerializer

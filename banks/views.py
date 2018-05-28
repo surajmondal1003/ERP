@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -14,7 +14,7 @@ from rest_framework import filters
 
 from banks.serializers import (
     BankSerializer,
-
+    BankReadSerializer,
 
 
 )
@@ -22,6 +22,21 @@ from django.contrib.auth.models import User
 from banks.models import Bank
 
 from django_filters.rest_framework import DjangoFilterBackend
+
+class BankReadView(ListAPIView):
+    queryset = Bank.objects.all()
+    serializer_class = BankReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+    pagination_class = ErpPageNumberPagination
+
+
+
+class BankReadDetailView(RetrieveAPIView):
+    queryset = Bank.objects.all()
+    serializer_class = BankReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
 
 
 

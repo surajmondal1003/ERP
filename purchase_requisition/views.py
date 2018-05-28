@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView,RetrieveUpdateAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -16,7 +16,8 @@ from purchase_requisition.serializers import (
     RequisitionDetailSerializer,
     RequisitionSerializer,
     RequisitionReadSerializer,
-    RequisitionDetailReadSerializer
+    RequisitionDetailReadSerializer,
+    RequisitionUpdateStatusSerializer
 
 
 )
@@ -41,7 +42,7 @@ class RequisitionReadView(ListAPIView):
 
 
 class RequisitionReadDropdown(ListAPIView):
-    queryset = Requisition.objects.filter(status=True)
+    queryset = Requisition.objects.filter(status=True, is_approve=1, is_finalised=0)
     serializer_class = RequisitionReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -64,6 +65,10 @@ class RequisitionMatser(ListCreateAPIView):
 class RequisitionUpdate(RetrieveUpdateDestroyAPIView):
     queryset = Requisition.objects.all()
     serializer_class = RequisitionSerializer
+
+class RequisitionUpdateStatus(RetrieveUpdateAPIView):
+    queryset = Requisition.objects.all()
+    serializer_class = RequisitionUpdateStatusSerializer
 
 
 

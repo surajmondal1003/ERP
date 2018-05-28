@@ -197,3 +197,28 @@ class PurchaseOrderReadForGRNSerializer(ModelSerializer):
     class Meta:
         model = PurchaseOrder
         fields = ['id','purchase_order_detail','purchase_order_map']
+
+
+# class PurchaseOrderReadForRequisitionSerializer(ModelSerializer):
+#     purchase_order = PurchaseOrderReadSerializer(many=True)
+#
+#     class Meta:
+#         model = PurchaseOrder
+#         fields = ['id', 'purchase_order_detail', 'purchase_order_map']
+
+
+
+class PurchaseOrderUpdateStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = PurchaseOrder
+        fields = ['id','status','is_approve','is_finalised']
+
+
+    def update(self, instance, validated_data):
+            instance.is_approve = validated_data.get('is_approve', instance.is_approve)
+            instance.is_finalised = validated_data.get('is_finalised', instance.is_finalised)
+            instance.status = validated_data.get('status', instance.status)
+            instance.save()
+
+            return instance

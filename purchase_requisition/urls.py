@@ -10,6 +10,7 @@ urlpatterns = [
     path('all_purchase_requistion/<pk>/',views.RequisitionReadDetailView.as_view()),
     path('purchase_requistion/', views.RequisitionMatser.as_view()),
     path('purchase_requistion/<pk>/', views.RequisitionUpdate.as_view()),
+    path('purchase_requistion_status/<pk>/', views.RequisitionUpdateStatus.as_view()),
     path('purchase_requistion_dropdown/', views.RequisitionReadDropdown.as_view()),
 
 

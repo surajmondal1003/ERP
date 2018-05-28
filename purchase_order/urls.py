@@ -10,7 +10,9 @@ urlpatterns = [
     path('all_purchase_order/<pk>/',views.PurchaseOrderReadDetailView.as_view()),
     path('purchase_order/', views.PurchaseOrderMatser.as_view()),
     path('purchase_order/<pk>/', views.PurchaseOrderUpdate.as_view()),
+    path('purchase_order_status/<pk>/', views.PurchaseOrderUpdateStatus.as_view()),
     path('purchase_order_dropdown/', views.PurchaseOrderReadDropdown.as_view()),
+    path('requisition_purchase_order/<requisition>/', views.PurchaseOrderByRequisition.as_view()),
 
 
 ]

@@ -123,3 +123,33 @@ Without Tax and sales
     "material_tax": []
 }
 
+
+
+
+
+EMPLOYEE
+
+
+{
+    "company": 1,
+    "departments": 1,
+    "designation": 1,
+    "first_name": "Shuvendu",
+    "last_name": "Dheki",
+    "email": "shuvendu@gmail.com",
+    "contact": 8214035984,
+    "dob": "2018-05-13T14:56:52.467692Z",
+    "alt_contact": 8274891650,
+    "pan": "P01123456",
+    "blood_group": "O+",
+    "adhaar_no": "AA0123456",
+    "emp_present_address": "",
+    "emp_present_state": null,
+    "emp_present_city": "",
+    "emp_present_pin": "",
+    "emp_permanent_address": "",
+    "emp_permanent_state": null,
+    "emp_permanent_city": "",
+    "emp_permanent_pin": "",
+    "status": false
+}

@@ -31,8 +31,6 @@ class CompanySerializer(ModelSerializer):
                   'company_address','company_contact','company_state','company_city','company_pin','status','created_at','created_by','children']
 
 class CompanyListSerializer(ModelSerializer):
-
-
     class Meta:
         model = Company
         fields = ['id','company_name']

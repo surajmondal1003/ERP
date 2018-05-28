@@ -107,3 +107,18 @@ class VendorNameSerializer(ModelSerializer):
         model = Vendor
         fields = ['id','vendor_fullname']
 
+
+
+
+class VendorUpdateStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = Vendor
+        fields = ['id','status']
+
+
+    def update(self, instance, validated_data):
+            instance.status = validated_data.get('status', instance.status)
+            instance.save()
+
+            return instance

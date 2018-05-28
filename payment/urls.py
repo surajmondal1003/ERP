@@ -10,6 +10,7 @@ urlpatterns = [
     path('all_payment/<pk>/',views.PaymentReadDetailView.as_view()),
     path('payment/', views.PaymentMatser.as_view()),
     path('payment/<pk>/', views.PaymentMatserUpdate.as_view()),
+    path('payment_status/<pk>/', views.PaymentUpdateStatus.as_view()),
 
 
 ]

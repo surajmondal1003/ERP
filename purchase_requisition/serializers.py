@@ -9,6 +9,8 @@ from purchaseorggroup.serializers import PurchaseGroupSerializer,PurchaseOrgSeri
 from authentication.serializers import UserLoginSerializer,UserReadSerializer
 from material_master.serializers import MaterialNameSerializer,MaterialReadSerializer,MaterialSerializer
 from company_branch.serializers import UOMSerializer,CompanyStorageSerializer,CompanyStorageBinSerializer,CompanyBranchSerializer
+
+
 from rest_framework.relations import StringRelatedField,PrimaryKeyRelatedField
 
 
@@ -111,5 +113,22 @@ class RequisitionReadSerializer(ModelSerializer):
                   'requisition_detail','requisition_map']
 
 
+
+
+
+class RequisitionUpdateStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = Requisition
+        fields = ['id','status','is_approve','is_finalised']
+
+
+    def update(self, instance, validated_data):
+            instance.is_approve = validated_data.get('is_approve', instance.is_approve)
+            instance.is_finalised = validated_data.get('is_finalised', instance.is_finalised)
+            instance.status = validated_data.get('status', instance.status)
+            instance.save()
+
+            return instance
 
 

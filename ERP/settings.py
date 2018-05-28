@@ -55,7 +55,11 @@ INSTALLED_APPS = [
     'purchase_order',
     'grn',
     'purchase_invoice',
-    'payment'
+    'payment',
+    'stock',
+    'departments',
+    'designation',
+    'employee'
 
 
 ]

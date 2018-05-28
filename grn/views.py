@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView,RetrieveUpdateAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -16,7 +16,8 @@ from grn.serializers import (
     GRNSerializer,
     GRNDetailSerializer,
     GRNMapSerializer,
-    GRNReadSerializer
+    GRNReadSerializer,
+    GRNUpdateStatusSerializer
 
 )
 from django.contrib.auth.models import User
@@ -37,7 +38,7 @@ class GRNReadViewList(ListAPIView):
 
 
 class GRNReadViewDropdown(ListAPIView):
-    queryset = GRN.objects.filter(status=True)
+    queryset = GRN.objects.filter(status=True, is_approve=1, is_finalised=0)
     serializer_class = GRNReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -66,3 +67,21 @@ class GRNUpdate(RetrieveUpdateDestroyAPIView):
     serializer_class = GRNSerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
+
+class GRNByPurchaseOrder(ListAPIView):
+    serializer_class = GRNReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+    def get_queryset(self):
+        po_order=self.kwargs['po_order']
+        return GRN.objects.filter(po_order_id=po_order,status=True)
+    # def get_queryset(self):
+    #     requisition=self.kwargs['requisition']
+    #     return PurchaseOrder.objects.filter(requisition_id=requisition)
+
+
+
+class GRNUpdateStatus(RetrieveUpdateAPIView):
+    queryset = GRN.objects.all()
+    serializer_class = GRNUpdateStatusSerializer

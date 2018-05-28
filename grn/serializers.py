@@ -72,6 +72,16 @@ class GRNSerializer(ModelSerializer):
 
         return grn
 
+    def update(self, instance, validated_data):
+
+            instance.is_approve = validated_data.get('is_approve', instance.is_approve)
+            instance.is_finalised = validated_data.get('is_finalised', instance.is_finalised)
+            instance.status = validated_data.get('status', instance.status)
+
+            instance.save()
+
+            return instance
+
 
 
 
@@ -119,3 +129,21 @@ class GRNCreateBySerializer(ModelSerializer):
     class Meta:
         model = GRN
         fields = ['id','created_at','created_by']
+
+
+
+
+class GRNUpdateStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = GRN
+        fields = ['id','status','is_approve','is_finalised']
+
+
+    def update(self, instance, validated_data):
+            instance.is_approve = validated_data.get('is_approve', instance.is_approve)
+            instance.is_finalised = validated_data.get('is_finalised', instance.is_finalised)
+            instance.status = validated_data.get('status', instance.status)
+            instance.save()
+
+            return instance

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView,RetrieveUpdateAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -15,7 +15,8 @@ from rest_framework import filters
 from payment.serializers import (
     PaymentMapSerializer,
     PaymentSerializer,
-    PaymentReadSerializer
+    PaymentReadSerializer,
+    PaymentUpdateStatusSerializer
 
 )
 from django.contrib.auth.models import User
@@ -56,3 +57,9 @@ class PaymentMatserUpdate(RetrieveUpdateDestroyAPIView):
     serializer_class = PaymentSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
+
+
+class PaymentUpdateStatus(RetrieveUpdateAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentUpdateStatusSerializer
+

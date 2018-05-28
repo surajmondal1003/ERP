@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView,RetrieveUpdateAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -16,7 +16,8 @@ from purchase_order.serializers import (
     PurchaseOrderSerializer,
     PurchaseDetailSerializer,
     PurchaseFreightSerializer,
-    PurchaseOrderReadSerializer
+    PurchaseOrderReadSerializer,
+    PurchaseOrderUpdateStatusSerializer
 
 
 
@@ -47,11 +48,10 @@ class PurchaseOrderReadDetailView(RetrieveAPIView):
 
 
 class PurchaseOrderReadDropdown(ListAPIView):
-    queryset = PurchaseOrder.objects.filter(status=True)
+    queryset = PurchaseOrder.objects.filter(status=True, is_approve=1, is_finalised=0)
     serializer_class = PurchaseOrderReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
-
 
 
 class PurchaseOrderMatser(ListCreateAPIView):
@@ -65,3 +65,21 @@ class PurchaseOrderUpdate(RetrieveUpdateDestroyAPIView):
     queryset = PurchaseOrder.objects.all()
     serializer_class = PurchaseOrderSerializer
     authentication_classes = [TokenAuthentication]
+
+class PurchaseOrderByRequisition(ListAPIView):
+    serializer_class = PurchaseOrderReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+    def get_queryset(self):
+        requisition=self.kwargs['requisition']
+        return PurchaseOrder.objects.filter(requisition_id=requisition,status=True)
+    # def get_queryset(self):
+    #     requisition=self.kwargs['requisition']
+    #     return PurchaseOrder.objects.filter(requisition_id=requisition)
+
+
+
+class PurchaseOrderUpdateStatus(RetrieveUpdateAPIView):
+    queryset = PurchaseOrder.objects.all()
+    serializer_class = PurchaseOrderUpdateStatusSerializer

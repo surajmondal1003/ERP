@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('vendor_master/', views.VendorMatserCreate.as_view()),
     path('vendor_master/<pk>/', views.VendorMatserUpdate.as_view()),
+    path('vendor_master_status/<pk>/', views.VendorMatserStatusUpdate.as_view()),
     path('vendor_dropdown/', views.VendorReadDropdown.as_view()),
     path('all_vendor/', views.VendorReadView.as_view()),
 

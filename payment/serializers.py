@@ -71,3 +71,19 @@ class PaymentReadSerializer(ModelSerializer):
         fields = ['id','company','pur_inv','vendor','vendor_address','purchase_inv_no','purchase_inv_date','po_order','po_order_no','bank','payment_mode',
                   'payment_refrence','total_amount','special_note','is_approve','status','created_at',
                   'created_by','payment_map']
+
+
+
+class PaymentUpdateStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = Payment
+        fields = ['id','status','is_approve']
+
+
+    def update(self, instance, validated_data):
+            instance.is_approve = validated_data.get('is_approve', instance.is_approve)
+            instance.status = validated_data.get('status', instance.status)
+            instance.save()
+
+            return instance

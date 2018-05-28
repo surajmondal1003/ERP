@@ -34,6 +34,11 @@ from purchase_order import views
 from grn import views
 from purchase_invoice import views
 from payment import views
+from stock import views
+from departments import views
+from designation import views
+from employee import views
+
 
 urlpatterns = [
 
@@ -53,5 +58,9 @@ urlpatterns = [
     path('', include('grn.urls')),
     path('', include('purchase_invoice.urls')),
     path('', include('payment.urls')),
+    path('', include('stock.urls')),
+    path('', include('departments.urls')),
+    path('', include('designation.urls')),
+    path('', include('employee.urls')),
     path('admin/', admin.site.urls),
 ]

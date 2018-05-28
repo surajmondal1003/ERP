@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveUpdateAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -16,7 +16,8 @@ from vendor.serializers import (
     VendorTypeSerializer,
     VendorAccountSerializer,
     VendorAddressSerializer,
-    VendorSerializer
+    VendorSerializer,
+    VendorUpdateStatusSerializer
 
 
 
@@ -67,4 +68,10 @@ class VendorMatserUpdate(RetrieveUpdateDestroyAPIView):
     serializer_class = VendorSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
-    pagination_class = ErpPageNumberPagination
+
+class VendorMatserStatusUpdate(RetrieveUpdateAPIView):
+    queryset = Vendor.objects.all()
+    serializer_class = VendorUpdateStatusSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+

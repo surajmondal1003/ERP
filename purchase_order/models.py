@@ -35,15 +35,12 @@ class PurchaseOrder(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 
-
     def __str__(self):
         return str(self.created_at)
 
 
     def requisition_no(self):
         return RequisitionMap.objects.filter(requisition=self.requisition)
-
-
 
 
 

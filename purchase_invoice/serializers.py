@@ -7,9 +7,11 @@ import datetime
 from purchase_invoice.models import PurchaseInvoice,PurchaseInvoiceDetail,PurchaseInvoiceMap
 from django.contrib.auth.models import User
 from grn.serializers import GRNMapSerializer,GRNDetailReadSerializer,GRNReadSerializer,GRNCreateBySerializer
-from purchase_order.serializers import PurchaseMapSerializer
+from purchase_order.serializers import PurchaseMapSerializer,PurchaseDetailSerializer
 from company.serializers import CompanyListSerializer
-
+from material_master.serializers import MaterialNameSerializer
+from vendor.serializers import VendorNameSerializer,VendorAddressSerializer
+from purchaseorggroup.serializers import PurchaseOrgSerializer,PurchaseGroupSerializer
 
 class PurchaseInvoiceMapSerializer(ModelSerializer):
 
@@ -58,16 +60,28 @@ class PurchaseInvoiceSerializer(ModelSerializer):
 
         PurchaseInvoiceMap.objects.create(pur_invoice=po_invoice, purchase_inv_no=purchase_invoice_no)
 
-
         return po_invoice
 
+    def update(self, instance, validated_data):
+
+        instance.is_approve = validated_data.get('is_approve', instance.is_approve)
+        instance.is_finalised = validated_data.get('is_finalised', instance.is_finalised)
+        instance.status = validated_data.get('status', instance.status)
+
+        instance.save()
+
+        return instance
 
 
 
 
+class PurchaseInvoiceReadDetailSerializer(ModelSerializer):
+    material = MaterialNameSerializer(read_only=True)
 
-
-
+    class Meta:
+        model = PurchaseInvoiceDetail
+        fields = ['id','material','rate','quantity','discount_per','discount_amount','igst',
+                  'cgst', 'sgst', 'total_gst', 'material_value', 'material_amount_pay']
 
 
 class PurchaseInvoiceReadSerializer(ModelSerializer):
@@ -75,13 +89,34 @@ class PurchaseInvoiceReadSerializer(ModelSerializer):
 
     grn= GRNCreateBySerializer(read_only=True)
     grn_number = GRNMapSerializer(read_only=True,many=True)
-    pur_invoice_detail=PurchaseInvoiceDetailSerializer(many=True)
+    pur_invoice_detail=PurchaseInvoiceReadDetailSerializer(many=True)
     pur_invoice_map=PurchaseInvoiceMapSerializer(many=True)
     po_order_no = PurchaseMapSerializer(many=True,read_only=True)
+    pur_org = PurchaseOrgSerializer()
+    pur_grp = PurchaseGroupSerializer()
     company = CompanyListSerializer()
+    vendor = VendorNameSerializer(read_only=True)
+    vendor_address = VendorAddressSerializer()
 
     class Meta:
         model = PurchaseInvoice
-        fields = ['id','grn','grn_number','po_order','po_order_no','pur_org','pur_grp','total_gst','total_amount','vendor','vendor_address',
+        fields = ['id','grn','grn_number',  'po_order','po_order_no','pur_org','pur_grp','total_gst','total_amount','vendor','vendor_address',
                   'company','is_approve','is_finalised','status','created_at','created_by',
                   'pur_invoice_detail','pur_invoice_map']
+
+
+
+class InvoiceUpdateStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = PurchaseInvoice
+        fields = ['id','status','is_approve','is_finalised']
+
+
+    def update(self, instance, validated_data):
+            instance.is_approve = validated_data.get('is_approve', instance.is_approve)
+            instance.is_finalised = validated_data.get('is_finalised', instance.is_finalised)
+            instance.status = validated_data.get('status', instance.status)
+            instance.save()
+
+            return instance
