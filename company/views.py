@@ -18,6 +18,9 @@ from company.serializers import (
 
 )
 
+from django_filters.rest_framework import filters
+from rest_framework import filters
+
 
 # Create your views here.
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -34,22 +37,24 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
 class CompanyListView(ListAPIView):
-    queryset = Company.objects.all()
+    queryset = Company.objects.all().order_by('-id')
     serializer_class = CompanyListSerializer
     #permission_classes = [IsAuthenticated, IsAdminUser]
     authentication_classes = [TokenAuthentication]
 
 
 class TermsAndConditionsViewSet(viewsets.ModelViewSet):
-    queryset = TermsandConditon.objects.all()
+    queryset = TermsandConditon.objects.all().order_by('-id')
     serializer_class =TermsAndConditionSerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('term_text',)
 
 
 class TermsAndConditionsDropdown(ListAPIView):
-    queryset = TermsandConditon.objects.all()
+    queryset = TermsandConditon.objects.all().order_by('-id')
     serializer_class =TermsAndConditionSerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]

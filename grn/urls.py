@@ -13,6 +13,7 @@ urlpatterns = [
     path('grn_status/<pk>/', views.GRNUpdateStatus.as_view()),
     path('grn_dropdown/', views.GRNReadViewDropdown.as_view()),
     path('purchase_order_grn/<po_order>/', views.GRNByPurchaseOrder.as_view()),
+    path('grn_search/', views.GRNSearchView.as_view()),
 
 
 ]

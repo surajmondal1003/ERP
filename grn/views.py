@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from authentication.pagination import ErpLimitOffestpagination, ErpPageNumberPagination
 from django_filters.rest_framework import filters
 from rest_framework import filters
+from datetime import datetime,timedelta,time,date
+from django.utils import timezone
 
 
 from grn.serializers import (
@@ -85,3 +87,62 @@ class GRNByPurchaseOrder(ListAPIView):
 class GRNUpdateStatus(RetrieveUpdateAPIView):
     queryset = GRN.objects.all()
     serializer_class = GRNUpdateStatusSerializer
+
+
+class GRNSearchView(ListAPIView):
+
+    serializer_class = GRNReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+    pagination_class = ErpPageNumberPagination
+
+    def get_queryset(self):
+        queryset = GRN.objects.all()
+
+        company = self.request.query_params.get('company', None)
+        status = self.request.query_params.get('status', None)
+        approve=self.request.query_params.get('approve', None)
+        from_date=self.request.query_params.get('from_date', None)
+        to_date=self.request.query_params.get('to_date', None)
+        created_at=self.request.query_params.get('created_at', None)
+        vendor = self.request.query_params.get('vendor', None)
+
+        if company is not None:
+            queryset = queryset.filter(company_id=company)
+
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
+        if approve is not None:
+            queryset = queryset.filter(is_approve=approve)
+
+        if vendor is not None:
+            queryset = queryset.filter(vendor_id=vendor)
+
+        if created_at is not None:
+
+            created_from_date = datetime.strptime(created_at, "%Y-%m-%d").date()
+            created_from_date = datetime.combine(created_from_date, time.min)
+            created_from_date = datetime.isoformat(created_from_date)
+
+            created_to_date = datetime.strptime(created_at, "%Y-%m-%d").date()
+            created_to_date = datetime.combine(created_to_date, time.max)
+            created_to_date = datetime.isoformat(created_to_date)
+
+            queryset = queryset.filter(created_at__gte=created_from_date,created_at__lte=created_to_date)
+
+
+        if from_date and to_date is not None:
+
+            created_from_date = datetime.strptime(from_date, "%Y-%m-%d").date()
+            created_from_date = datetime.combine(created_from_date, time.min)
+            created_from_date = datetime.isoformat(created_from_date)
+
+            created_to_date = datetime.strptime(to_date, "%Y-%m-%d").date()
+            created_to_date = datetime.combine(created_to_date, time.max)
+            created_to_date = datetime.isoformat(created_to_date)
+
+            queryset = queryset.filter(created_at__gte=created_from_date,created_at__lte=created_to_date)
+
+        return queryset
+

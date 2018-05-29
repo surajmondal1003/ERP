@@ -35,6 +35,9 @@ class VendorTypeViewSet(viewsets.ModelViewSet):
     #permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('vendor_type',)
+
 
 class VendorReadView(ListAPIView):
     queryset = Vendor.objects.all()

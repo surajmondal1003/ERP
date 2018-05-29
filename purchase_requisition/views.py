@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from authentication.pagination import ErpLimitOffestpagination, ErpPageNumberPagination
 from django_filters.rest_framework import filters
 from rest_framework import filters
+from django.utils.dateparse import parse_datetime
+
 
 
 from purchase_requisition.serializers import (
@@ -25,6 +27,11 @@ from django.contrib.auth.models import User
 from purchase_requisition.models import Requisition,RequisitionDetail
 
 from django_filters.rest_framework import DjangoFilterBackend
+from pytz import timezone, utc
+from datetime import datetime,timedelta,time,date
+from django.utils import timezone
+
+
 
 
 
@@ -70,6 +77,64 @@ class RequisitionUpdateStatus(RetrieveUpdateAPIView):
     queryset = Requisition.objects.all()
     serializer_class = RequisitionUpdateStatusSerializer
 
+
+
+class RequisitioSearchView(ListAPIView):
+
+    serializer_class = RequisitionReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+    pagination_class = ErpPageNumberPagination
+
+    def get_queryset(self):
+        queryset = Requisition.objects.all()
+        username = self.request.query_params.get('username', None)
+        company = self.request.query_params.get('company', None)
+        status = self.request.query_params.get('status', None)
+        approve=self.request.query_params.get('approve', None)
+        from_date=self.request.query_params.get('from_date', None)
+        to_date=self.request.query_params.get('to_date', None)
+        created_at=self.request.query_params.get('created_at', None)
+
+
+        if username is not None:
+            queryset = queryset.filter(created_by__first_name=username)
+
+        if company is not None:
+            queryset = queryset.filter(company_id=company)
+
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
+        if approve is not None:
+            queryset = queryset.filter(is_approve=approve)
+
+        if created_at is not None:
+
+            created_from_date = datetime.strptime(created_at, "%Y-%m-%d").date()
+            created_from_date = datetime.combine(created_from_date, time.min)
+            created_from_date = datetime.isoformat(created_from_date)
+
+            created_to_date = datetime.strptime(created_at, "%Y-%m-%d").date()
+            created_to_date = datetime.combine(created_to_date, time.max)
+            created_to_date = datetime.isoformat(created_to_date)
+
+            queryset = queryset.filter(created_at__gte=created_from_date,created_at__lte=created_to_date)
+
+
+        if from_date and to_date is not None:
+
+            created_from_date = datetime.strptime(from_date, "%Y-%m-%d").date()
+            created_from_date = datetime.combine(created_from_date, time.min)
+            created_from_date = datetime.isoformat(created_from_date)
+
+            created_to_date = datetime.strptime(to_date, "%Y-%m-%d").date()
+            created_to_date = datetime.combine(created_to_date, time.max)
+            created_to_date = datetime.isoformat(created_to_date)
+
+            queryset = queryset.filter(created_at__gte=created_from_date,created_at__lte=created_to_date)
+
+        return queryset
 
 
 

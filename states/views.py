@@ -25,7 +25,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 class StateViewSet(viewsets.ModelViewSet):
-    queryset = State.objects.all()
+    queryset = State.objects.all().order_by('state_name')
     serializer_class =StateSerializer
     #permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
@@ -35,11 +35,11 @@ class StateViewSet(viewsets.ModelViewSet):
 
 
 class ActiveStateView(ListAPIView):
-    queryset = State.objects.filter(status=True)
+    queryset = State.objects.filter(status=True).order_by('state_name')
     serializer_class =StateSerializer
     #permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
-    #pagination_class = ErpPageNumberPagination
+
 
 
 

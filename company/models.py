@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 class Company(models.Model):
     parent = models.ForeignKey('self',on_delete=models.CASCADE,related_name='children', null=True, blank=True)
     company_name=models.CharField(max_length=100)
-    company_url=models.URLField()
+    company_url=models.CharField(max_length=255)
     company_gst=models.CharField(max_length=50)
     company_pan=models.CharField(max_length=50)
     company_cin=models.CharField(max_length=50)

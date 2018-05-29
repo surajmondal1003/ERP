@@ -24,7 +24,7 @@ from banks.models import Bank
 from django_filters.rest_framework import DjangoFilterBackend
 
 class BankReadView(ListAPIView):
-    queryset = Bank.objects.all()
+    queryset = Bank.objects.all().order_by('-id')
     serializer_class = BankReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -41,7 +41,7 @@ class BankReadDetailView(RetrieveAPIView):
 
 
 class BankViewSet(viewsets.ModelViewSet):
-    queryset = Bank.objects.all()
+    queryset = Bank.objects.all().order_by('-id')
     serializer_class =BankSerializer
     #permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
@@ -59,4 +59,4 @@ class SpecificCompanyBankDropdown(ListAPIView):
 
     def get_queryset(self):
         company=self.kwargs['company']
-        return Bank.objects.filter(company_id=company,status=True)
+        return Bank.objects.filter(company_id=company,status=True).order_by('-id')

@@ -7,6 +7,7 @@ from django.urls import path
 
 urlpatterns = [
     path('employee/',views.EmployeeMatser.as_view()),
+    path('employee/<pk>/',views.EmployeeMatserUpdate.as_view()),
     path('all_employee/',views.EmployeeReadView.as_view()),
     path('all_employee/<pk>/',views.EmployeeReadDetailView.as_view()),
 
