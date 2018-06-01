@@ -9,4 +9,5 @@ urlpatterns = [
     path('designation/', views.DesignationMatser.as_view()),
     path('designation/<pk>/', views.DesignationUpdate.as_view()),
     path('designation_dropdown/<department>/', views.SpecificDepartmentDesignationDropdown.as_view()),
+    path('designation_status/<pk>/', views.DesignationUpdateStatus.as_view()),
 ]

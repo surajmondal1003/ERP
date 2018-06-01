@@ -20,7 +20,7 @@ class PaymentMapSerializer(ModelSerializer):
 
     class Meta:
         model = PaymentMap
-        fields = ['id','payment_no']
+        fields = ['id','payment_no','is_deleted']
 
 
 
@@ -38,7 +38,7 @@ class PaymentSerializer(ModelSerializer):
         model = Payment
         fields = ['id','company','pur_inv','vendor','vendor_address','purchase_inv_no','purchase_inv_date','po_order','po_order_no','bank','payment_mode',
                   'payment_refrence','total_amount','special_note','is_approve','is_paid','status','created_at',
-                  'created_by']
+                  'created_by','is_deleted']
 
 
 
@@ -76,6 +76,7 @@ class PaymentSerializer(ModelSerializer):
             instance.status = validated_data.get('status', instance.status)
             instance.created_at = validated_data.get('created_at', instance.created_at)
             instance.created_by = validated_data.get('created_by', instance.created_by)
+            instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
             instance.save()
 
             return instance
@@ -98,7 +99,7 @@ class PaymentReadSerializer(ModelSerializer):
         model = Payment
         fields = ['id','company','pur_inv','vendor','vendor_address','purchase_inv_no','purchase_inv_date','po_order','po_order_no','bank','payment_mode',
                   'payment_refrence','total_amount','special_note','is_approve','is_paid','status','created_at',
-                  'created_by','payment_map']
+                  'created_by','payment_map','is_deleted']
 
 
 
@@ -106,13 +107,14 @@ class PaymentUpdateStatusSerializer(ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = ['id','status','is_approve','is_paid']
+        fields = ['id','status','is_approve','is_paid','is_deleted']
 
 
     def update(self, instance, validated_data):
             instance.is_approve = validated_data.get('is_approve', instance.is_approve)
             instance.status = validated_data.get('status', instance.status)
             instance.is_paid = validated_data.get('is_paid', instance.is_paid)
+            instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
             instance.save()
 
             return instance

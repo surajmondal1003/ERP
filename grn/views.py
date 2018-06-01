@@ -83,7 +83,6 @@ class GRNByPurchaseOrder(ListAPIView):
     #     return PurchaseOrder.objects.filter(requisition_id=requisition)
 
 
-
 class GRNUpdateStatus(RetrieveUpdateAPIView):
     queryset = GRN.objects.all()
     serializer_class = GRNUpdateStatusSerializer

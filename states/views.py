@@ -33,6 +33,28 @@ class StateViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('state_name',)
 
+    def get_queryset(self):
+
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            queryset = State.objects.filter(is_deleted=False).order_by('state_name')
+
+
+            if order_by.lower() =='desc' and field_name:
+                queryset = State.objects.filter(is_deleted=False).order_by('-'+field_name)
+            elif order_by.lower() =='asc' and field_name:
+                queryset = State.objects.filter(is_deleted=False).order_by(field_name)
+
+
+            return queryset
+
+        except Exception as e:
+            raise
+
+
+
 
 class ActiveStateView(ListAPIView):
     queryset = State.objects.filter(status=True,is_deleted=False).order_by('state_name')

@@ -39,7 +39,7 @@ class MaterialTypeViewSet(viewsets.ModelViewSet):
 
 
 class MaterialReadView(ListAPIView):
-    queryset = Material.objects.all()
+    queryset = Material.objects.filter(is_deleted=False)
     serializer_class = MaterialReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -62,7 +62,7 @@ class MaterialMatserUpdate(RetrieveUpdateDestroyAPIView):
 
 
 class PurchaseOrganisationSpecificMaterialList(ListAPIView):
-    queryset = Material.objects.filter(status=True)
+    queryset = Material.objects.filter(status=True,is_deleted=False)
     serializer_class = MaterialReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     #authentication_classes = [TokenAuthentication]

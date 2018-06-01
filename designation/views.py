@@ -14,7 +14,8 @@ from rest_framework import filters
 from designation.serializers import (
     DesignationSerializer,
     DesignationReadSerializer,
-    DesignationListSerializer
+    DesignationListSerializer,
+    DesignationUpdateStatusSerializer
 
 )
 
@@ -64,3 +65,10 @@ class SpecificDepartmentDesignationDropdown(ListAPIView):
     def get_queryset(self):
         department=self.kwargs['department']
         return Designation.objects.filter(departments=department,is_deleted=False)
+
+
+
+class DesignationUpdateStatus(RetrieveUpdateAPIView):
+    queryset = Designation.objects.all()
+    serializer_class = DesignationUpdateStatusSerializer
+    authentication_classes = [TokenAuthentication]

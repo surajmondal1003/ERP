@@ -21,4 +21,5 @@ class TransportSerializer(ModelSerializer):
 
     class Meta:
         model = Transport
-        fields = ['id','company','storage','transporter_name','email','phone','state','city','pin','pan','gstin','status','created_at','created_by']
+        fields = ['id','company','storage','transporter_name','email','phone','state','city','pin','pan','gstin','status','created_at',
+                  'created_by','is_deleted']

@@ -24,7 +24,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 class TransportViewSet(viewsets.ModelViewSet):
-    queryset = Transport.objects.all()
+    queryset = Transport.objects.filter(is_deleted=False)
     serializer_class =TransportSerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]

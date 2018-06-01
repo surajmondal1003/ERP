@@ -32,6 +32,7 @@ class Payment(models.Model):
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.created_at)
@@ -40,6 +41,7 @@ class Payment(models.Model):
 class PaymentMap(models.Model):
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='payment_map')
     payment_no=models.CharField(max_length=255)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.payment_no)

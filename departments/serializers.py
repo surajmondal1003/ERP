@@ -43,3 +43,18 @@ class  DepartmentsListSerializer(ModelSerializer):
     class Meta:
         model =  Departments
         fields = ['id','department_name']
+
+
+class DepartmentUpdateStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = Departments
+        fields = ['id','status','is_deleted']
+
+
+    def update(self, instance, validated_data):
+            instance.status = validated_data.get('status', instance.status)
+            instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
+            instance.save()
+
+            return instance

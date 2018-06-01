@@ -46,3 +46,19 @@ class  DesignationListSerializer(ModelSerializer):
     class Meta:
         model =  Designation
         fields = ['id','designation_name']
+
+
+
+class DesignationUpdateStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = Designation
+        fields = ['id','status','is_deleted']
+
+
+    def update(self, instance, validated_data):
+            instance.status = validated_data.get('status', instance.status)
+            instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
+            instance.save()
+
+            return instance

@@ -29,7 +29,7 @@ from datetime import datetime,timedelta,time,date
 
 
 class PaymentReadView(ListAPIView):
-    queryset = Payment.objects.all()
+    queryset = Payment.objects.filter(is_deleted=False)
     serializer_class = PaymentReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -66,7 +66,7 @@ class PaymentUpdateStatus(RetrieveUpdateAPIView):
 
 
 class PaymentDropdownView(ListAPIView):
-    queryset = Payment.objects.filter(status=True)
+    queryset = Payment.objects.filter(status=True,is_deleted=False)
     serializer_class = PaymentDropdownSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]

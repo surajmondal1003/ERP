@@ -30,7 +30,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 class VendorTypeViewSet(viewsets.ModelViewSet):
-    queryset = VendorType.objects.all()
+    queryset = VendorType.objects.filter(is_deleted=False)
     serializer_class =VendorTypeSerializer
     #permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
@@ -40,7 +40,7 @@ class VendorTypeViewSet(viewsets.ModelViewSet):
 
 
 class VendorReadView(ListAPIView):
-    queryset = Vendor.objects.all()
+    queryset = Vendor.objects.filter(is_deleted=False)
     serializer_class = VendorSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -50,7 +50,7 @@ class VendorReadView(ListAPIView):
 
 
 class VendorReadDropdown(ListAPIView):
-    queryset = Vendor.objects.filter(status=True)
+    queryset = Vendor.objects.filter(status=True,is_deleted=False)
     serializer_class = VendorSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]

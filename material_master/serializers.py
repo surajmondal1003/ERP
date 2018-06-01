@@ -20,7 +20,7 @@ class MaterialUOMSerializer(ModelSerializer):
 
     class Meta:
         model = Material_UOM
-        fields = ['id','material_for','base_uom','unit_per_uom','unit_uom']
+        fields = ['id','material_for','base_uom','unit_per_uom','unit_uom','is_deleted']
 
 class MaterialUOMSerializerforRead(ModelSerializer):
     base_uom = UOMSerializer()
@@ -28,7 +28,7 @@ class MaterialUOMSerializerforRead(ModelSerializer):
 
     class Meta:
         model = Material_UOM
-        fields = ['id','material_for','base_uom','unit_per_uom','unit_uom']
+        fields = ['id','material_for','base_uom','unit_per_uom','unit_uom','is_deleted']
 
 
 
@@ -36,20 +36,20 @@ class MaterialTaxSerializer(ModelSerializer):
 
     class Meta:
         model = Material_Tax
-        fields = ['id','tax_for','igst','cgst','sgst','hsn']
+        fields = ['id','tax_for','igst','cgst','sgst','hsn','is_deleted']
 
 
 class MaterialPurchaseOrgSerializer(ModelSerializer):
 
     class Meta:
         model = MaterialPurchaseOrg
-        fields = ['id','pur_org']
+        fields = ['id','pur_org','is_deleted']
 
 class MaterialPurchaseGrpSerializer(ModelSerializer):
 
     class Meta:
         model = MaterialPurchaseGroup
-        fields = ['id','pur_group']
+        fields = ['id','pur_group','is_deleted']
 
 
 
@@ -96,7 +96,7 @@ class MaterialReadSerializer(ModelSerializer):
     class Meta:
         model = Material
         fields = ['id','material_fullname','material_type','material_code','description','is_taxable','is_sales','status','created_at',
-                  'material_uom', 'material_tax','material_purchase_org','material_purchase_grp']
+                  'is_deleted','material_uom', 'material_tax','material_purchase_org','material_purchase_grp']
 
 
 
@@ -116,7 +116,7 @@ class MaterialSerializer(ModelSerializer):
     class Meta:
         model = Material
         fields = ['id','material_fullname','material_type','material_code','description','is_taxable','is_sales','status','created_at',
-                  'material_uom','material_tax','material_purchase_org','material_purchase_grp']
+                  'is_deleted','material_uom','material_tax','material_purchase_org','material_purchase_grp']
 
     def create(self, validated_data):
         is_taxable = validated_data.get('is_taxable')
@@ -186,6 +186,7 @@ class MaterialSerializer(ModelSerializer):
             instance.is_sales = validated_data.get('is_sales', instance.is_sales)
             instance.status = validated_data.get('status', instance.status)
             instance.created_at = validated_data.get('created_at', instance.created_at)
+            instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
             instance.save()
 
             print(instance)
@@ -239,6 +240,7 @@ class MaterialSerializer(ModelSerializer):
             instance.is_sales = validated_data.get('is_sales', instance.is_sales)
             instance.status = validated_data.get('status', instance.status)
             instance.created_at = validated_data.get('created_at', instance.created_at)
+            instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
             instance.save()
 
             print(instance)

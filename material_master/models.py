@@ -25,6 +25,7 @@ class Material(models.Model):
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     #created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.material_fullname)
@@ -47,6 +48,7 @@ class Material_UOM(models.Model):
     base_uom=models.ForeignKey(UOM,on_delete=models.SET_NULL,blank=True,null=True,related_name='base_uom')
     unit_per_uom=models.DecimalField(max_digits=10,decimal_places=2)
     unit_uom=models.ForeignKey(UOM,on_delete=models.SET_NULL,blank=True,null=True,related_name='unit_uom')
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.material.material_fullname)
@@ -64,6 +66,7 @@ class Material_Tax(models.Model):
     cgst=models.DecimalField(max_digits=10,decimal_places=2)
     sgst=models.DecimalField(max_digits=10,decimal_places=2)
     hsn=models.CharField(max_length=30)
+    is_deleted = models.BooleanField(default=False)
 
 
     def __str__(self):
@@ -73,6 +76,7 @@ class Material_Tax(models.Model):
 class MaterialPurchaseOrg(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE,related_name='material_purchase_org')
     pur_org = models.ForeignKey(PurchaseOrg, on_delete=models.SET_NULL,blank=True,null=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.material.material_fullname)
@@ -81,6 +85,7 @@ class MaterialPurchaseOrg(models.Model):
 class MaterialPurchaseGroup(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE,related_name='material_purchase_grp')
     pur_group = models.ForeignKey(PurchaseGroup, on_delete=models.SET_NULL,blank=True,null=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.material.material_fullname)

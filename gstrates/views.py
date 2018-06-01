@@ -27,7 +27,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 class GSTViewSet(viewsets.ModelViewSet):
-    queryset = GSTrates.objects.all()
+    queryset = GSTrates.objects.filter(is_deleted=False)
     serializer_class =GSTSerializer
     #permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
@@ -37,7 +37,7 @@ class GSTViewSet(viewsets.ModelViewSet):
 
 # Create your views here.
 class GSTDropdown(ListAPIView):
-    queryset = GSTrates.objects.filter(status=True)
+    queryset = GSTrates.objects.filter(status=True,is_deleted=False)
     serializer_class =GSTSerializer
     #permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]

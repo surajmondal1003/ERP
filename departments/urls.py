@@ -8,5 +8,6 @@ urlpatterns = [
     path('all_departments/<pk>/', views.DepartmentsReadDetailView.as_view()),
     path('departments/', views.DepartmentsMatser.as_view()),
     path('departments/<pk>/', views.DepartmentsUpdate.as_view()),
+    path('departments_status/<pk>/', views.DepartmentsUpdateStatus.as_view()),
     path('company_departments/<company>/', views.SpecificCompanyDepartments.as_view()),
 ]

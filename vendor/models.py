@@ -13,6 +13,7 @@ class VendorType(models.Model):
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.vendor_type)
@@ -28,6 +29,7 @@ class Vendor(models.Model):
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.vendor_fullname)
@@ -43,6 +45,7 @@ class VendorAddress(models.Model):
     email=models.EmailField(max_length=255,blank=True,null=True)
     designation=models.CharField(max_length=255,blank=True,null=True)
     contact_person=models.CharField(max_length=255,blank=True,null=True)
+    is_deleted = models.BooleanField(default=False)
 
 
     def __str__(self):
@@ -56,6 +59,7 @@ class VendorAccount(models.Model):
     branch_name=models.CharField(max_length=255)
     account_no=models.CharField(max_length=255)
     ifsc_code=models.CharField(max_length=255)
+    is_deleted = models.BooleanField(default=False)
 
 
     def __str__(self):

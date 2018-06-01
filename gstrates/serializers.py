@@ -13,5 +13,5 @@ class GSTSerializer(ModelSerializer):
 
     class Meta:
         model = GSTrates
-        fields = ['id','gst_pattern','igst','cgst','sgst','status','created_at','created_by']
+        fields = ['id','gst_pattern','igst','cgst','sgst','status','created_at','created_by','is_deleted']
 

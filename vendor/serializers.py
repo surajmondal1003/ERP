@@ -11,7 +11,7 @@ class VendorTypeSerializer(ModelSerializer):
 
     class Meta:
         model = VendorType
-        fields = ['id','vendor_type','status','created_at','created_by']
+        fields = ['id','vendor_type','status','created_at','created_by','is_deleted']
 
 
 class VendorAddressSerializer(ModelSerializer):
@@ -41,8 +41,8 @@ class VendorSerializer(ModelSerializer):
 
     class Meta:
         model = Vendor
-        fields = ['id','vendor_fullname','vendor_type','company','pan_no','gst_no','cin_no','status','created_at','created_by',
-                  'vendor_address','vendor_account']
+        fields = ['id','vendor_fullname','vendor_type','company','pan_no','gst_no','cin_no','status','created_at','created_by'
+                  ,'is_deleted','vendor_address','vendor_account']
 
     def create(self, validated_data):
 
@@ -80,6 +80,7 @@ class VendorSerializer(ModelSerializer):
             instance.status = validated_data.get('status', instance.status)
             instance.created_at = validated_data.get('created_at', instance.created_at)
             instance.created_by = validated_data.get('created_by', instance.created_by)
+            instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
             instance.save()
 
             print(instance)
@@ -115,11 +116,12 @@ class VendorUpdateStatusSerializer(ModelSerializer):
 
     class Meta:
         model = Vendor
-        fields = ['id','status']
+        fields = ['id','status','is_deleted']
 
 
     def update(self, instance, validated_data):
             instance.status = validated_data.get('status', instance.status)
+            instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
             instance.save()
 
             return instance

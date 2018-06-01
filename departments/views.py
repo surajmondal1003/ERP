@@ -13,7 +13,8 @@ from rest_framework import filters
 
 from departments.serializers import (
     DepartmentsSerializer,
-    DepartmentsReadSerializer
+    DepartmentsReadSerializer,
+    DepartmentUpdateStatusSerializer
 
 )
 
@@ -34,20 +35,20 @@ class DepartmentsReadView(ListAPIView):
 
 
 class DepartmentsReadDetailView(RetrieveAPIView):
-    queryset = Departments.objects.filter(is_deleted=False)
+    queryset = Departments.objects.all()
     serializer_class = DepartmentsSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
 
 
 class DepartmentsMatser(ListCreateAPIView):
-    queryset = Departments.objects.filter(is_deleted=False)
+    queryset = Departments.objects.all()
     serializer_class = DepartmentsSerializer
     authentication_classes = [TokenAuthentication]
 
 
 class DepartmentsUpdate(RetrieveUpdateAPIView):
-    queryset = Departments.objects.filter(is_deleted=False)
+    queryset = Departments.objects.all()
     serializer_class = DepartmentsSerializer
     authentication_classes = [TokenAuthentication]
 
@@ -60,3 +61,10 @@ class SpecificCompanyDepartments(ListAPIView):
     def get_queryset(self):
         company=self.kwargs['company']
         return Departments.objects.filter(company_id=company,status=True,is_deleted=False)
+
+
+
+class DepartmentsUpdateStatus(RetrieveUpdateAPIView):
+    queryset = Departments.objects.all()
+    serializer_class = DepartmentUpdateStatusSerializer
+    authentication_classes = [TokenAuthentication]

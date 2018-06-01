@@ -25,7 +25,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 class ContractorMatserCreate(ListCreateAPIView):
-    queryset = Contractor.objects.filter(is_deleted=False)
+    queryset = Contractor.objects.all()
     serializer_class = ContractorSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -34,7 +34,7 @@ class ContractorMatserCreate(ListCreateAPIView):
 
 
 class ContractorMatserUpdate(RetrieveUpdateDestroyAPIView):
-    queryset = Contractor.objects.filter(is_deleted=False)
+    queryset = Contractor.objects.all()
     serializer_class = ContractorSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -59,7 +59,7 @@ class ContractorReadDropdown(ListAPIView):
 
 
 class ContractorMatserStatusUpdate(RetrieveUpdateAPIView):
-    queryset = Contractor.objects.filter(is_deleted=False)
+    queryset = Contractor.objects.all()
     serializer_class = ContractorUpdateStatusSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
