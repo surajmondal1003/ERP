@@ -39,7 +39,7 @@ class EmployeeMatserUpdate(RetrieveUpdateDestroyAPIView):
 
 
 class EmployeeReadView(ListAPIView):
-    queryset = Employee.objects.all()
+    queryset = Employee.objects.filter(is_deleted=False)
     serializer_class = EmployeeReadSerializer
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination

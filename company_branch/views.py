@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,GenericAPIView,RetrieveAPIView
+from rest_framework.generics import ListAPIView,GenericAPIView,RetrieveAPIView,ListCreateAPIView,RetrieveUpdateAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
@@ -14,7 +14,8 @@ from company_branch.serializers import (
     CompanyBranchSerializer,
     CompanyStorageSerializer,
     UOMSerializer,
-    CompanyStorageBinSerializer
+    CompanyStorageBinSerializer,
+    CompanyStorageBinReadSerializer
 
 )
 from django.contrib.auth.models import User
@@ -27,7 +28,7 @@ from rest_framework import filters
 
 # Create your views here.
 class CompanyBranchViewSet(viewsets.ModelViewSet):
-    queryset = CompanyBranch.objects.all().order_by('-id')
+    queryset = CompanyBranch.objects.filter(is_deleted=False).order_by('-id')
     serializer_class =CompanyBranchSerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -47,12 +48,12 @@ class SpecificCompanyBranchView(ListAPIView):
 
     def get_queryset(self):
         company=self.kwargs['company']
-        return CompanyBranch.objects.filter(company_id=company).order_by('-id')
+        return CompanyBranch.objects.filter(company_id=company,is_deleted=False).order_by('-id')
 
 
 
 class CompanyStorageViewSet(viewsets.ModelViewSet):
-    queryset = StorageLocation.objects.all().order_by('-id')
+    queryset = StorageLocation.objects.filter(is_deleted=False).order_by('-id')
     serializer_class =CompanyStorageSerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -69,7 +70,7 @@ class SpecificCompanyStorageView(ListAPIView):
 
     def get_queryset(self):
         company=self.kwargs['company']
-        return StorageLocation.objects.filter(company_id=company).order_by('-id')
+        return StorageLocation.objects.filter(company_id=company,is_deleted=False).order_by('-id')
 
 
 
@@ -81,22 +82,24 @@ class UOMViewSet(viewsets.ModelViewSet):
     pagination_class = ErpPageNumberPagination
 
 class CompanyStorageBinViewSet(viewsets.ModelViewSet):
-    queryset = StorageBin.objects.all().order_by('-id')
+    queryset = StorageBin.objects.filter(is_deleted=False).order_by('-id')
     serializer_class =CompanyStorageBinSerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
 
+
+
 class SpecificCompanyStorageBinView(ListAPIView):
 
-    serializer_class = CompanyStorageBinSerializer
+    serializer_class = CompanyStorageBinReadSerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
 
     def get_queryset(self):
         company=self.kwargs['company']
-        return StorageBin.objects.filter(company_id=company).order_by('-id')
+        return StorageBin.objects.filter(company_id=company,is_deleted=False).order_by('-id')
 
 
 
@@ -110,7 +113,7 @@ class SpecificCompanyBranchDropdown(ListAPIView):
 
     def get_queryset(self):
         company=self.kwargs['company']
-        return CompanyBranch.objects.filter(company_id=company,status=True).order_by('-id')
+        return CompanyBranch.objects.filter(company_id=company,status=True,is_deleted=False).order_by('-id')
 
 
 
@@ -123,7 +126,7 @@ class SpecificCompanyStorageDropdown(ListAPIView):
 
     def get_queryset(self):
         company=self.kwargs['company']
-        return StorageLocation.objects.filter(company_id=company,status=True).order_by('-id')
+        return StorageLocation.objects.filter(company_id=company,status=True,is_deleted=False).order_by('-id')
 
 
 class SpecificCompanyStorageBinDropdown(ListAPIView):
@@ -135,5 +138,5 @@ class SpecificCompanyStorageBinDropdown(ListAPIView):
 
     def get_queryset(self):
         company=self.kwargs['company']
-        return StorageBin.objects.filter(company_id=company,status=True).order_by('-id')
+        return StorageBin.objects.filter(company_id=company,status=True,is_deleted=False).order_by('-id')
 

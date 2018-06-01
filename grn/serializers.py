@@ -118,7 +118,7 @@ class GRNReadSerializer(ModelSerializer):
         model = GRN
         fields = ['id','purchase_order_no','po_order','pur_org','pur_grp','company','vendor','vendor_address','waybill_no','vehicle_no',
                   'check_post','challan_no','challan_date','is_approve','is_finalised','status','created_at',
-                  'created_by','grn_detail','grn_map']
+                  'created_by','is_deleted','grn_detail','grn_map']
 
 
 
@@ -137,13 +137,14 @@ class GRNUpdateStatusSerializer(ModelSerializer):
 
     class Meta:
         model = GRN
-        fields = ['id','status','is_approve','is_finalised']
+        fields = ['id','status','is_approve','is_finalised','is_deleted']
 
 
     def update(self, instance, validated_data):
             instance.is_approve = validated_data.get('is_approve', instance.is_approve)
             instance.is_finalised = validated_data.get('is_finalised', instance.is_finalised)
             instance.status = validated_data.get('status', instance.status)
+            instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
             instance.save()
 
             return instance

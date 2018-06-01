@@ -28,6 +28,15 @@ DEBUG = True
 ALLOWED_HOSTS = ['192.168.24.208']
 
 
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'surajmondal1003@gmail.com'
+EMAIL_HOST_PASSWORD = '8013134344'
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -59,7 +68,9 @@ INSTALLED_APPS = [
     'stock',
     'departments',
     'designation',
-    'employee'
+    'employee',
+    'contractor',
+
 
 
 ]

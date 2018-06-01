@@ -12,6 +12,8 @@ from company.serializers import CompanyListSerializer
 from material_master.serializers import MaterialNameSerializer
 from vendor.serializers import VendorNameSerializer,VendorAddressSerializer
 from purchaseorggroup.serializers import PurchaseOrgSerializer,PurchaseGroupSerializer
+from django.core.mail import send_mail
+
 
 class PurchaseInvoiceMapSerializer(ModelSerializer):
 
@@ -59,6 +61,21 @@ class PurchaseInvoiceSerializer(ModelSerializer):
 
 
         PurchaseInvoiceMap.objects.create(pur_invoice=po_invoice, purchase_inv_no=purchase_invoice_no)
+
+
+
+        text_message='http://192.168.24.208:8000/purchase_invoice_status/'+str(po_invoice.id)+'/'
+
+        admin_user=User.objects.values_list('email',flat=True).filter(is_superuser=True)
+        for each_user in admin_user:
+            #print(each_user)
+            send_mail(
+                'Test Subject',
+                text_message,
+                'surajmondal1003@gmail.com',
+                [ each_user ],
+                fail_silently=False,
+            )
 
         return po_invoice
 

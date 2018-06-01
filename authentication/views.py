@@ -27,11 +27,17 @@ class CustomObtainAuthToken(ObtainAuthToken):
         serializer=UserLoginSerializer(user,many=True)
 
         if user:
+            #user_groups=list()
+            user_group=user.groups.all()
+            for item in user_group:
+                user_group=item.name
+
             return Response({
                 'token': token.key,
                 'user_id': user.pk,
                 'username':user.username,
-                'email': user.email
+                'email': user.email,
+                'user_type':user_group
             })
         else:
             return Response({'message':'Invalid Login','status':status.HTTP_400_BAD_REQUEST})

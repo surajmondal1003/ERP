@@ -16,13 +16,14 @@ from payment.serializers import (
     PaymentMapSerializer,
     PaymentSerializer,
     PaymentReadSerializer,
-    PaymentUpdateStatusSerializer
+    PaymentUpdateStatusSerializer,
+    PaymentDropdownSerializer
 
 )
 from django.contrib.auth.models import User
 from payment.models import PaymentMap,Payment
-
 from django_filters.rest_framework import DjangoFilterBackend
+from datetime import datetime,timedelta,time,date
 
 
 
@@ -63,3 +64,51 @@ class PaymentUpdateStatus(RetrieveUpdateAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentUpdateStatusSerializer
 
+
+class PaymentDropdownView(ListAPIView):
+    queryset = Payment.objects.filter(status=True)
+    serializer_class = PaymentDropdownSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+
+
+class PaymentSearchView(ListAPIView):
+
+    serializer_class = PaymentReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+    pagination_class = ErpPageNumberPagination
+
+    def get_queryset(self):
+        queryset = Payment.objects.all()
+        company = self.request.query_params.get('company', None)
+        from_date=self.request.query_params.get('from_date', None)
+        to_date=self.request.query_params.get('to_date', None)
+        vendor = self.request.query_params.get('vendor', None)
+        paid = self.request.query_params.get('paid', None)
+
+
+
+        if company is not None:
+            queryset = queryset.filter(company_id=company)
+
+        if vendor is not None:
+            queryset = queryset.filter(vendor_id=vendor)
+
+        if paid is not None:
+            queryset = queryset.filter(is_paid=paid)
+
+        if from_date and to_date is not None:
+
+            created_from_date = datetime.strptime(from_date, "%Y-%m-%d").date()
+            created_from_date = datetime.combine(created_from_date, time.min)
+            created_from_date = datetime.isoformat(created_from_date)
+
+            created_to_date = datetime.strptime(to_date, "%Y-%m-%d").date()
+            created_to_date = datetime.combine(created_to_date, time.max)
+            created_to_date = datetime.isoformat(created_to_date)
+
+            queryset = queryset.filter(created_at__gte=created_from_date,created_at__lte=created_to_date)
+
+        return queryset

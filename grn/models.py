@@ -35,6 +35,7 @@ class GRN(models.Model):
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
 
 
 

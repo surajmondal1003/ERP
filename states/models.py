@@ -12,6 +12,7 @@ class State(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     user=models.ForeignKey(User,on_delete=models.SET_NULL,blank=True,null=True)
     status=models.BooleanField(default=True)
+    is_deleted=models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.state_name)

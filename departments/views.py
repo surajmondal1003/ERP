@@ -24,7 +24,7 @@ from departments.models import Departments
 
 
 class DepartmentsReadView(ListAPIView):
-    queryset = Departments.objects.all()
+    queryset = Departments.objects.filter(is_deleted=False)
     serializer_class = DepartmentsReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -34,20 +34,20 @@ class DepartmentsReadView(ListAPIView):
 
 
 class DepartmentsReadDetailView(RetrieveAPIView):
-    queryset = Departments.objects.all()
+    queryset = Departments.objects.filter(is_deleted=False)
     serializer_class = DepartmentsSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
 
 
 class DepartmentsMatser(ListCreateAPIView):
-    queryset = Departments.objects.all()
+    queryset = Departments.objects.filter(is_deleted=False)
     serializer_class = DepartmentsSerializer
     authentication_classes = [TokenAuthentication]
 
 
 class DepartmentsUpdate(RetrieveUpdateAPIView):
-    queryset = Departments.objects.all()
+    queryset = Departments.objects.filter(is_deleted=False)
     serializer_class = DepartmentsSerializer
     authentication_classes = [TokenAuthentication]
 
@@ -59,4 +59,4 @@ class SpecificCompanyDepartments(ListAPIView):
 
     def get_queryset(self):
         company=self.kwargs['company']
-        return Departments.objects.filter(company_id=company,status=True)
+        return Departments.objects.filter(company_id=company,status=True,is_deleted=False)

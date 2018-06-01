@@ -38,6 +38,7 @@ from stock import views
 from departments import views
 from designation import views
 from employee import views
+from contractor import views
 
 
 urlpatterns = [
@@ -62,5 +63,6 @@ urlpatterns = [
     path('', include('departments.urls')),
     path('', include('designation.urls')),
     path('', include('employee.urls')),
+    path('', include('contractor.urls')),
     path('admin/', admin.site.urls),
 ]

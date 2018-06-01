@@ -12,7 +12,7 @@ class DepartmentsSerializer(ModelSerializer):
     queryset = Departments.objects.all()
     class Meta:
         model = Departments
-        fields = ['id','company','department_name','created_at','created_by','status']
+        fields = ['id','company','department_name','created_at','created_by','status','is_deleted']
 
     def create(self, validated_data):
         departments = Departments.objects.create(**validated_data)
@@ -22,6 +22,7 @@ class DepartmentsSerializer(ModelSerializer):
         instance.company = validated_data.get('company', instance.status)
         instance.department_name = validated_data.get('department_name', instance.status)
         instance.status = validated_data.get('status', instance.status)
+        instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
         instance.save()
         return instance
 
@@ -35,7 +36,7 @@ class DepartmentsReadSerializer(ModelSerializer):
 
     class Meta:
         model = Departments
-        fields = ['id','company','department_name','created_at','created_by','status']
+        fields = ['id','company','department_name','created_at','created_by','status','is_deleted']
 
 
 class  DepartmentsListSerializer(ModelSerializer):

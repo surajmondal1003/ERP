@@ -28,7 +28,8 @@ class CompanySerializer(ModelSerializer):
     class Meta:
         model = Company
         fields = ['id','parent','company_name','company_url','company_gst','company_pan','company_cin','company_email',
-                  'company_address','company_contact','company_state','company_city','company_pin','status','created_at','created_by','children']
+                  'company_address','company_contact','company_state','company_city','company_pin','status','created_at',
+                  'created_by','is_deleted','children']
 
 class CompanyListSerializer(ModelSerializer):
     class Meta:
@@ -45,4 +46,4 @@ class TermsAndConditionSerializer(ModelSerializer):
 
     class Meta:
         model = TermsandConditon
-        fields = ['id','company','term_type','term_text','status','created_at','created_by']
+        fields = ['id','company','term_type','term_text','status','created_at','created_by','is_deleted']

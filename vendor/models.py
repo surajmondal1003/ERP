@@ -22,9 +22,9 @@ class Vendor(models.Model):
     vendor_fullname=models.CharField(max_length=100)
     vendor_type=models.ForeignKey(VendorType,on_delete=models.SET_NULL,blank=True,null=True)
     company=models.ForeignKey(Company,on_delete=models.SET_NULL,blank=True,null=True)
-    pan_no=models.CharField(max_length=255)
-    gst_no=models.CharField(max_length=255)
-    cin_no=models.CharField(max_length=255)
+    pan_no=models.CharField(max_length=255,blank=True,null=True)
+    gst_no=models.CharField(max_length=255,blank=True,null=True)
+    cin_no=models.CharField(max_length=255,blank=True,null=True)
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
@@ -40,9 +40,9 @@ class VendorAddress(models.Model):
     city=models.CharField(max_length=255)
     pincode=models.CharField(max_length=255)
     mobile=models.BigIntegerField()
-    email=models.EmailField(max_length=255)
-    designation=models.CharField(max_length=255)
-    contact_person=models.CharField(max_length=255)
+    email=models.EmailField(max_length=255,blank=True,null=True)
+    designation=models.CharField(max_length=255,blank=True,null=True)
+    contact_person=models.CharField(max_length=255,blank=True,null=True)
 
 
     def __str__(self):

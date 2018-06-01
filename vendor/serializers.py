@@ -15,6 +15,7 @@ class VendorTypeSerializer(ModelSerializer):
 
 
 class VendorAddressSerializer(ModelSerializer):
+    designation=serializers.CharField(required=False)
 
 
     class Meta:

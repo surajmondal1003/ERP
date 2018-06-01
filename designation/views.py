@@ -25,7 +25,7 @@ from designation.models import Designation
 
 
 class DesignationReadView(ListAPIView):
-    queryset = Designation.objects.all()
+    queryset = Designation.objects.filter(is_deleted=False)
     serializer_class =DesignationReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -63,4 +63,4 @@ class SpecificDepartmentDesignationDropdown(ListAPIView):
 
     def get_queryset(self):
         department=self.kwargs['department']
-        return Designation.objects.filter(departments=department)
+        return Designation.objects.filter(departments=department,is_deleted=False)

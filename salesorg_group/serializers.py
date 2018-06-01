@@ -10,6 +10,7 @@ class SalesOrgSerializer(ModelSerializer):
     )
     status = serializers.BooleanField(default=True)
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    description = serializers.CharField(required=False)
 
     class Meta:
         model = SalesOrg
@@ -22,6 +23,7 @@ class SalesGroupSerializer(ModelSerializer):
     )
     status = serializers.BooleanField(default=True)
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    description = serializers.CharField(required=False)
     class Meta:
         model = SalesGroup
         fields = ['id', 'name', 'description','status','created_at','created_by']

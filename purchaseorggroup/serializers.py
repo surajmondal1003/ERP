@@ -13,6 +13,7 @@ class PurchaseOrgSerializer(ModelSerializer):
     )
     status = serializers.BooleanField(default=True)
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    description=serializers.CharField(required=False)
 
     class Meta:
         model = PurchaseOrg
@@ -25,6 +26,8 @@ class PurchaseGroupSerializer(ModelSerializer):
     )
     status = serializers.BooleanField(default=True)
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    description = serializers.CharField(required=False)
+
     class Meta:
         model = PurchaseGroup
         fields = ['id', 'name', 'description','status','created_at','created_by']

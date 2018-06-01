@@ -15,7 +15,7 @@ class CompanyBranchSerializer(ModelSerializer):
     class Meta:
         model = CompanyBranch
         fields = ['id','company','branch_name','branch_address','branch_state','branch_city','branch_pincode','branch_contact_no',
-                  'branch_email','branch_gstin','branch_pan','branch_cin','status','created_at','created_by']
+                  'branch_email','branch_gstin','branch_pan','branch_cin','status','created_at','created_by','is_deleted']
 
 
 class CompanyStorageSerializer(ModelSerializer):
@@ -25,7 +25,7 @@ class CompanyStorageSerializer(ModelSerializer):
     class Meta:
         model = StorageLocation
         fields = ['id','company','branch','storage_address','storage_state','storage_city','storage_pincode','storage_contact_no',
-                  'storage_email','status','created_at','created_by']
+                  'storage_email','status','created_at','created_by','is_deleted']
 
 
 class UOMSerializer(ModelSerializer):
@@ -34,10 +34,24 @@ class UOMSerializer(ModelSerializer):
         model = UOM
         fields = ['id','name']
 
+
+
+
+
+class CompanyStorageBinReadSerializer(ModelSerializer):
+    created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    status=serializers.BooleanField(default=True)
+    uom=UOMSerializer()
+
+    class Meta:
+        model = StorageBin
+        fields = ['id','company','branch','storage','uom','bin_no','bin_volume','status','created_at','created_by','is_deleted']
+
+
 class CompanyStorageBinSerializer(ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     status=serializers.BooleanField(default=True)
 
     class Meta:
         model = StorageBin
-        fields = ['id','company','branch','storage','uom','bin_no','bin_volume','status','created_at','created_by']
+        fields = ['id','company','branch','storage','uom','bin_no','bin_volume','status','created_at','created_by','is_deleted']

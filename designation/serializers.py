@@ -13,7 +13,7 @@ class DesignationSerializer(ModelSerializer):
     queryset = Designation.objects.all()
     class Meta:
         model = Designation
-        fields = ['id','company','departments','designation_name','created_at','created_by','status']
+        fields = ['id','company','departments','designation_name','created_at','created_by','status','is_deleted']
 
     def create(self, validated_data):
         designation = Designation.objects.create(**validated_data)
@@ -24,6 +24,7 @@ class DesignationSerializer(ModelSerializer):
         instance.departments = validated_data.get('departments', instance.status)
         instance.designation_name = validated_data.get('designation_name', instance.status)
         instance.status = validated_data.get('status', instance.status)
+        instance.is_deleted = validated_data.get('is_deleted', instance.is_deleted)
         instance.save()
         return instance
 
@@ -37,7 +38,7 @@ class DesignationReadSerializer(ModelSerializer):
 
     class Meta:
         model = Designation
-        fields = ['id','company','departments','designation_name','created_at','created_by','status']
+        fields = ['id','company','departments','designation_name','created_at','created_by','status','is_deleted']
 
 
 

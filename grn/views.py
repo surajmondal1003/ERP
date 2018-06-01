@@ -30,7 +30,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 class GRNReadViewList(ListAPIView):
-    queryset = GRN.objects.all()
+    queryset = GRN.objects.filter(is_deleted=False)
     serializer_class = GRNReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -40,7 +40,7 @@ class GRNReadViewList(ListAPIView):
 
 
 class GRNReadViewDropdown(ListAPIView):
-    queryset = GRN.objects.filter(status=True, is_approve=1, is_finalised=0)
+    queryset = GRN.objects.filter(status=True, is_approve=1, is_finalised=0,is_deleted=False)
     serializer_class = GRNReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -77,7 +77,7 @@ class GRNByPurchaseOrder(ListAPIView):
 
     def get_queryset(self):
         po_order=self.kwargs['po_order']
-        return GRN.objects.filter(po_order_id=po_order,status=True)
+        return GRN.objects.filter(po_order_id=po_order,status=True,is_deleted=False)
     # def get_queryset(self):
     #     requisition=self.kwargs['requisition']
     #     return PurchaseOrder.objects.filter(requisition_id=requisition)

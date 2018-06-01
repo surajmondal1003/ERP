@@ -13,7 +13,7 @@ class BankSerializer(ModelSerializer):
 
     class Meta:
         model = Bank
-        fields = ['id','company','bank_name','bank_branch','bank_ifsc','status','created_at','created_by']
+        fields = ['id','company','bank_name','bank_branch','bank_ifsc','status','created_at','created_by','is_deleted']
 
 
 class BankReadSerializer(ModelSerializer):
@@ -24,4 +24,4 @@ class BankReadSerializer(ModelSerializer):
 
     class Meta:
         model = Bank
-        fields = ['id','company','bank_name','bank_branch','bank_ifsc','status','created_at','created_by']
+        fields = ['id','company','bank_name','bank_branch','bank_ifsc','status','created_at','created_by','is_deleted']

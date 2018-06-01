@@ -24,7 +24,7 @@ from rest_framework import filters
 
 # Create your views here.
 class CompanyViewSet(viewsets.ModelViewSet):
-    queryset = Company.objects.all()
+    queryset = Company.objects.filter(is_deleted=False)
     serializer_class =CompanySerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -37,14 +37,14 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
 class CompanyListView(ListAPIView):
-    queryset = Company.objects.all().order_by('-id')
+    queryset = Company.objects.filter(is_deleted=False).order_by('-id')
     serializer_class = CompanyListSerializer
     #permission_classes = [IsAuthenticated, IsAdminUser]
     authentication_classes = [TokenAuthentication]
 
 
 class TermsAndConditionsViewSet(viewsets.ModelViewSet):
-    queryset = TermsandConditon.objects.all().order_by('-id')
+    queryset = TermsandConditon.objects.filter(is_deleted=False).order_by('-id')
     serializer_class =TermsAndConditionSerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -54,7 +54,7 @@ class TermsAndConditionsViewSet(viewsets.ModelViewSet):
 
 
 class TermsAndConditionsDropdown(ListAPIView):
-    queryset = TermsandConditon.objects.all().order_by('-id')
+    queryset = TermsandConditon.objects.filter(is_deleted=False).order_by('-id')
     serializer_class =TermsAndConditionSerializer
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
@@ -64,7 +64,7 @@ class TermsAndConditionsDropdown(ListAPIView):
 
 
 class PurchaseOrganisationSpecificCompanyList(ListAPIView):
-    queryset = Company.objects.all()
+    queryset = Company.objects.filter(is_deleted=False)
     serializer_class = CompanyListSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     #authentication_classes = [TokenAuthentication]
@@ -72,7 +72,7 @@ class PurchaseOrganisationSpecificCompanyList(ListAPIView):
 
     def get_queryset(self):
         org_id = self.kwargs['org_id']
-        return Company.objects.filter(company_branch__purchaseorgmapping__pur_org_id=org_id)
+        return Company.objects.filter(company_branch__purchaseorgmapping__pur_org_id=org_id,is_deleted=False)
 
 
 
