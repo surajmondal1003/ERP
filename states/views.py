@@ -39,17 +39,13 @@ class StateViewSet(viewsets.ModelViewSet):
             order_by = self.request.query_params.get('order_by', None)
             field_name = self.request.query_params.get('field_name', None)
 
-            queryset = State.objects.filter(is_deleted=False).order_by('state_name')
-
-
-            if order_by.lower() =='desc' and field_name:
+            if order_by and order_by.lower() =='desc' and field_name:
                 queryset = State.objects.filter(is_deleted=False).order_by('-'+field_name)
-            elif order_by.lower() =='asc' and field_name:
+            elif order_by and order_by.lower() =='asc' and field_name:
                 queryset = State.objects.filter(is_deleted=False).order_by(field_name)
-
-
+            else:
+                queryset = State.objects.filter(is_deleted=False).order_by('state_name')
             return queryset
-
         except Exception as e:
             raise
 

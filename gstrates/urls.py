@@ -12,5 +12,4 @@ urlpatterns = [
     path('', include(router.urls)),
     path('gst_rates_dropdown/',views.GSTDropdown.as_view()),
 
-
 ]
