@@ -15,9 +15,9 @@ class TransportSerializer(ModelSerializer):
 
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     status = serializers.BooleanField(default=True)
-    pan=serializers.CharField(required=False)
-    gstin=serializers.CharField(required=False)
-    email=serializers.EmailField(required=False)
+    pan=serializers.CharField(required=False,allow_blank=True,allow_null=True)
+    gstin=serializers.CharField(required=False,allow_blank=True,allow_null=True)
+    email=serializers.EmailField(required=False,allow_blank=True,allow_null=True)
 
     class Meta:
         model = Transport

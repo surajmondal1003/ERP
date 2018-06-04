@@ -14,4 +14,5 @@ urlpatterns = [
     path('company_dropdownlist/', CompanyListView.as_view(),name='company_list'),
     path('specific_organisation_company/<org_id>/', PurchaseOrganisationSpecificCompanyList.as_view()),
     path('terms_conditions_dropdown/', TermsAndConditionsDropdown.as_view()),
+    path('all_terms_conditions/', TermsAndConditionsReadView.as_view()),
 ]

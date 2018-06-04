@@ -15,6 +15,7 @@ urlpatterns = [
     path('vendor_master_status/<pk>/', views.VendorMatserStatusUpdate.as_view()),
     path('vendor_dropdown/', views.VendorReadDropdown.as_view()),
     path('all_vendor/', views.VendorReadView.as_view()),
+    path('all_vendor/<pk>/', views.VendorReadDetailView.as_view()),
 
 
 ]

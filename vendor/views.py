@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveUpdateAPIView,RetrieveAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -17,7 +17,8 @@ from vendor.serializers import (
     VendorAccountSerializer,
     VendorAddressSerializer,
     VendorSerializer,
-    VendorUpdateStatusSerializer
+    VendorUpdateStatusSerializer,
+    VendorReadSerializer
 
 
 
@@ -37,6 +38,24 @@ class VendorTypeViewSet(viewsets.ModelViewSet):
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('vendor_type',)
+
+    def get_queryset(self):
+
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            if order_by and order_by.lower() == 'desc' and field_name:
+                queryset = VendorType.objects.filter(is_deleted=False).order_by('-'+field_name)
+            elif order_by and order_by.lower() == 'asc' and field_name:
+                queryset = VendorType.objects.filter(is_deleted=False).order_by(field_name)
+            else:
+                queryset = VendorType.objects.filter(is_deleted=False).order_by('-id')
+            return queryset
+
+        except Exception as e:
+            raise
+
 
 
 class VendorReadView(ListAPIView):
@@ -77,4 +96,20 @@ class VendorMatserStatusUpdate(RetrieveUpdateAPIView):
     serializer_class = VendorUpdateStatusSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
+
+class VendorReadDetailView(RetrieveAPIView):
+    serializer_class = VendorReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+
+    def get_queryset(self):
+        vendor_id=self.kwargs['pk']
+        queryset = Vendor.objects.filter(id=vendor_id,vendor_address__is_deleted=False)
+        return queryset
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = VendorReadSerializer(queryset, many=True)
+        return Response(serializer.data)
 

@@ -151,7 +151,6 @@ class PurchaseOrderReadSerializer(ModelSerializer):
     vendor_address=VendorAddressSerializer(read_only=True)
 
 
-
     class Meta:
         model = PurchaseOrder
         fields = ['id','requisition_no','quotation_no','quotation_date','pur_org','pur_grp','company','vendor','vendor_address',

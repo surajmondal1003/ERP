@@ -14,7 +14,8 @@ from authentication.pagination import ErpLimitOffestpagination, ErpPageNumberPag
 from company.serializers import (
     CompanySerializer,
     CompanyListSerializer,
-    TermsAndConditionSerializer
+    TermsAndConditionSerializer,
+    TermsAndConditionReadSerializer
 
 )
 
@@ -50,7 +51,49 @@ class TermsAndConditionsViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('term_text',)
+    search_fields = ('term_text','term_text','company__company_name')
+
+    def get_queryset(self):
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            if order_by and order_by.lower() == 'desc' and field_name:
+                queryset = TermsandConditon.objects.filter(is_deleted=False).order_by('-' + field_name)
+            elif order_by and order_by.lower() == 'asc' and field_name:
+                queryset = TermsandConditon.objects.filter(is_deleted=False).order_by(field_name)
+            else:
+                queryset = TermsandConditon.objects.filter(is_deleted=False).order_by('-id')
+            return queryset
+
+        except Exception as e:
+            raise
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset=self.filter_queryset(queryset)
+        serializer = TermsAndConditionReadSerializer(queryset, many=True)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            return self.get_paginated_response(serializer.data)
+        return Response(serializer.data)
+
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
+
+        return queryset
+
+class TermsAndConditionsReadView(ListAPIView):
+    queryset = TermsandConditon.objects.filter(is_deleted=False).order_by('-id')
+    serializer_class = TermsAndConditionSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+    pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('term_text', 'term_text', 'company__company_name')
+
+
+
 
 
 class TermsAndConditionsDropdown(ListAPIView):

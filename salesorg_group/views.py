@@ -33,6 +33,23 @@ class SalesOrgViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
 
+    def get_queryset(self):
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            if order_by and order_by.lower() == 'desc' and field_name:
+                queryset = SalesOrg.objects.all().order_by('-' + field_name)
+            elif order_by and order_by.lower() == 'asc' and field_name:
+                queryset = SalesOrg.objects.all().order_by(field_name)
+            else:
+                queryset = SalesOrg.objects.all().order_by('-id')
+            return queryset
+
+        except Exception as e:
+            raise
+
+
 class SalesGroupViewSet(viewsets.ModelViewSet):
     queryset = SalesGroup.objects.all()
     serializer_class =SalesGroupSerializer
@@ -42,4 +59,19 @@ class SalesGroupViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
 
+    def get_queryset(self):
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            if order_by and order_by.lower() == 'desc' and field_name:
+                queryset = SalesGroup.objects.all().order_by('-' + field_name)
+            elif order_by and order_by.lower() == 'asc' and field_name:
+                queryset = SalesGroup.objects.all().order_by(field_name)
+            else:
+                queryset = SalesGroup.objects.all().order_by('-id')
+            return queryset
+
+        except Exception as e:
+            raise
 

@@ -37,6 +37,23 @@ class GRNReadViewList(ListAPIView):
     pagination_class = ErpPageNumberPagination
 
 
+    def get_queryset(self):
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            if order_by and order_by.lower() == 'desc' and field_name:
+                queryset = GRN.objects.filter(is_deleted=False).order_by('-' + field_name)
+            elif order_by and order_by.lower(is_deleted=False) == 'asc' and field_name:
+                queryset = GRN.objects.filter().order_by(field_name)
+            else:
+                queryset = GRN.objects.filter(is_deleted=False).order_by('-id')
+            return queryset
+
+        except Exception as e:
+            raise
+
+
 
 
 class GRNReadViewDropdown(ListAPIView):

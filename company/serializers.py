@@ -43,7 +43,16 @@ class TermsAndConditionSerializer(ModelSerializer):
 
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     status = serializers.BooleanField(default=True)
+    class Meta:
+        model = TermsandConditon
+        fields = ['id','company','term_type','term_text','status','created_at','created_by','is_deleted']
 
+
+class TermsAndConditionReadSerializer(ModelSerializer):
+
+    created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    status = serializers.BooleanField(default=True)
+    company=CompanyListSerializer()
     class Meta:
         model = TermsandConditon
         fields = ['id','company','term_type','term_text','status','created_at','created_by','is_deleted']

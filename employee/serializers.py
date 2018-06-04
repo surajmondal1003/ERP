@@ -13,7 +13,10 @@ from designation.serializers import DesignationReadSerializer
 class EmployeeSerializer(ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     status = serializers.BooleanField(default=True)
-    blood_group=serializers.CharField(required=False)
+    blood_group=serializers.CharField(required=False,allow_null=True,allow_blank=True)
+    alt_contact=serializers.CharField(required=False,allow_blank=True,allow_null=True)
+    pan=serializers.CharField(required=False,allow_blank=True,allow_null=True)
+
 
     class Meta:
         model = Employee
