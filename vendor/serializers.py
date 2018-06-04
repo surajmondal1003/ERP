@@ -204,10 +204,6 @@ class VendorSerializer(ModelSerializer):
                 address.save()
 
 
-
-
-
-
             vendor_accounts_ids = list()
             for vendor_account_id in vendor_account_data:
                 if vendor_account_id['id']:
