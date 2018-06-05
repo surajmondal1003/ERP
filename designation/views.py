@@ -32,7 +32,7 @@ class DesignationReadView(ListAPIView):
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('designation_name',)
+    search_fields = ('designation_name','departments__department_name','company__company_name')
 
     def get_queryset(self):
         try:

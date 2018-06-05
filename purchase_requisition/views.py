@@ -44,6 +44,10 @@ class RequisitionReadView(ListAPIView):
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('requisition_map__requisition_no', 'company__company_name', 'purchase_org__name', 'purchase_grp__name' )
+
+
 
     def get_queryset(self):
         try:

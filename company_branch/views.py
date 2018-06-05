@@ -45,6 +45,9 @@ class SpecificCompanyBranchView(ListAPIView):
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('branch_name', 'branch_address', 'branch_state', 'branch_contact_no','branch_email','branch_gstin','branch_pan'
+                     ,'branch_cin','status')
 
     def get_queryset(self):
         company=self.kwargs['company']

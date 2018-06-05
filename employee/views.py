@@ -43,6 +43,9 @@ class EmployeeReadView(ListAPIView):
     serializer_class = EmployeeReadSerializer
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('first_name','last_name','email','contact','company__company_name','departments__department_name',
+                     'designation__designation_name','status')
 
     def get_queryset(self):
         try:
