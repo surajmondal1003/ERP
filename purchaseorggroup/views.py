@@ -42,7 +42,7 @@ class PurchaseGroupViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('name',)
+    search_fields = ('name','description')
 
 
 class PurchaseOrgMappingViewSet(viewsets.ModelViewSet):
