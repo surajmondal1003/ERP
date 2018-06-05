@@ -45,7 +45,25 @@ class MaterialReadView(ListAPIView):
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('material_fullname',)
+    search_fields = ('material_fullname','material_uom__base_uom__name','material_uom__unit_uom__name','material_tax__igst',
+                     'material_tax__cgst','material_tax__sgst','material_tax__hsn')
+
+    def get_queryset(self):
+
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            if order_by and order_by.lower() == 'desc' and field_name:
+                queryset = Material.objects.filter(is_deleted=False).order_by('-' + field_name)
+            elif order_by and order_by.lower() == 'asc' and field_name:
+                queryset = Material.objects.filter(is_deleted=False).order_by(field_name)
+            else:
+                queryset = Material.objects.filter(is_deleted=False).order_by('-id')
+            return queryset
+
+        except Exception as e:
+            raise
 
 
 

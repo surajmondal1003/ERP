@@ -31,7 +31,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 class VendorTypeViewSet(viewsets.ModelViewSet):
-    queryset = VendorType.objects.filter(is_deleted=False)
+    queryset = VendorType.objects.filter(is_deleted=False).order_by('-id')
     serializer_class =VendorTypeSerializer
     #permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
@@ -59,13 +59,30 @@ class VendorTypeViewSet(viewsets.ModelViewSet):
 
 
 class VendorReadView(ListAPIView):
-    queryset = Vendor.objects.filter(is_deleted=False)
+    queryset = Vendor.objects.filter(is_deleted=False).order_by('-id')
     serializer_class = VendorSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('vendor_fullname',)
+    search_fields = ('vendor_fullname','pan_no','gst_no','cin_no','vendor_address__mobile')
+
+    def get_queryset(self):
+
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            if order_by and order_by.lower() == 'desc' and field_name:
+                queryset = Vendor.objects.filter(is_deleted=False).order_by('-'+field_name)
+            elif order_by and order_by.lower() == 'asc' and field_name:
+                queryset = Vendor.objects.filter(is_deleted=False).order_by(field_name)
+            else:
+                queryset = Vendor.objects.filter(is_deleted=False).order_by('-id')
+            return queryset
+
+        except Exception as e:
+            raise
 
 
 class VendorReadDropdown(ListAPIView):
