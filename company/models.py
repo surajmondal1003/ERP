@@ -8,11 +8,11 @@ from django.contrib.auth.models import User
 class Company(models.Model):
     parent = models.ForeignKey('self',on_delete=models.CASCADE,related_name='children', null=True, blank=True)
     company_name=models.CharField(max_length=100)
-    company_url=models.CharField(max_length=255)
-    company_gst=models.CharField(max_length=50)
-    company_pan=models.CharField(max_length=50)
-    company_cin=models.CharField(max_length=50)
-    company_email=models.EmailField(max_length=50)
+    company_url=models.CharField(max_length=255, blank=True,null=True)#Not mandatory field
+    company_gst=models.CharField(max_length=50, blank=True,null=True)#Not mandatory field
+    company_pan=models.CharField(max_length=50, blank=True,null=True)#Not mandatory field
+    company_cin=models.CharField(max_length=50, blank=True,null=True)#Not mandatory field
+    company_email=models.EmailField(max_length=50, blank=True,null=True)#Not mandatory field
     company_address=models.CharField(max_length=100)
     company_contact=models.BigIntegerField()
     company_state=models.ForeignKey(State,on_delete=models.SET_NULL,blank=True,null=True)

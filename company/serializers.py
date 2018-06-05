@@ -24,6 +24,11 @@ class CompanySerializer(ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     status=serializers.BooleanField(default=True)
     children=ChildrenSerializer(many=True, read_only=True)
+    company_url = serializers.CharField(required=False, allow_blank=True)  # Not mandatory field
+    company_gst = serializers.CharField(required=False, allow_blank=True)  # Not mandatory field
+    company_pan = serializers.CharField(required=False, allow_blank=True)  # Not mandatory field
+    company_cin = serializers.CharField(required=False, allow_blank=True)  # Not mandatory field
+    company_email = serializers.EmailField(required=False, allow_blank=True)  # Not mandatory field
 
     class Meta:
         model = Company
