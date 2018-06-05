@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from authentication.pagination import ErpLimitOffestpagination, ErpPageNumberPagination
 from django_filters.rest_framework import filters
 from rest_framework import filters
+from django.db.models import Q
 
 
 from vendor.serializers import (
@@ -118,15 +119,14 @@ class VendorReadDetailView(RetrieveAPIView):
     serializer_class = VendorReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
+    queryset = Vendor.objects.filter(vendor_address__is_deleted=False)
 
-
-    def get_queryset(self):
-        vendor_id=self.kwargs['pk']
-        queryset = Vendor.objects.filter(id=vendor_id,vendor_address__is_deleted=False)
-        return queryset
 
     def retrieve(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        vendor_id = self.kwargs['pk']
+        #queryset = Vendor.objects.filter(id=vendor_id, vendor_address__is_deleted=False)
+        queryset = Vendor.objects.filter(id=vendor_id, vendor_address__is_deleted=False,vendor_account__is_deleted=False)
         serializer = VendorReadSerializer(queryset,many=True)
-        return Response(serializer.data)
+        #print(queryset.query)
+        return Response(serializer.data[0])
 
