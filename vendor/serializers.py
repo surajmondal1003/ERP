@@ -164,7 +164,7 @@ class VendorSerializer(ModelSerializer):
             instance.save()
 
 
-            #multipledata(instance,vendor_address_data,vendor_addresses,VendorAddress)
+            multipledata(instance,vendor_address_data,vendor_addresses,VendorAddress)
 
 
             vendor_addresses_ids=list()
