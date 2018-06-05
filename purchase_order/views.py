@@ -37,6 +37,10 @@ class PurchaseOrderReadView(ListAPIView):
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('requisition__requisition_map__requisition_no', 'purchase_order_map__purchase_order_no', 'company__company_name',
+                     'purchase_order_detail__company_branch__branch_name','purchase_order_detail__storage_location__storage_address',
+                     'purchase_order_detail__storage_bin__bin_no')
 
     def get_queryset(self):
         try:
