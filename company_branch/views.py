@@ -46,8 +46,7 @@ class SpecificCompanyBranchView(ListAPIView):
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('branch_name', 'branch_address', 'branch_state', 'branch_contact_no','branch_email','branch_gstin','branch_pan'
-                     ,'branch_cin','status')
+    search_fields = ('branch_name','branch_address','branch_email','branch_gstin','branch_pan','branch_cin','branch_contact_no')
 
     def get_queryset(self):
         company=self.kwargs['company']
@@ -70,6 +69,8 @@ class SpecificCompanyStorageView(ListAPIView):
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('storage_address', 'storage_contact_no', 'storage_email')
 
     def get_queryset(self):
         company=self.kwargs['company']
@@ -99,6 +100,8 @@ class SpecificCompanyStorageBinView(ListAPIView):
     #permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('bin_no', 'bin_volume', 'uom__name')
 
     def get_queryset(self):
         company=self.kwargs['company']

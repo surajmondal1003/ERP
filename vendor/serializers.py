@@ -23,6 +23,7 @@ class VendorAddressSerializer(ModelSerializer):
     class Meta:
         model = VendorAddress
         fields = ['id','address','state','city','pincode','mobile','email','designation','contact_person','is_deleted']
+        # fields = ['id', 'address', 'state', 'city', 'pincode', 'mobile', 'email', 'designation', 'contact_person']
 
 
 class VendorAccountSerializer(ModelSerializer):
@@ -247,31 +248,27 @@ class VendorSerializer(ModelSerializer):
 
 
 
-# def multipledata(object,request_data,object_data,modelname):
-#     request_data_ids = list()
-#     for item_id in request_data:
-#         if item_id['id']:
-#             request_data_ids.append(item_id['id'])
-#
-#     object_ids = list()
-#     for item in object_data:
-#         object_ids.append(item.id)
-#
-#     updateable_ids = list(set(request_data_ids) & set(object_ids))
-#     deleteable_ids = list(set(object_ids) - set(request_data_ids))
-#
-#     #print(request_data[0].keys())
-#     # for i in request_data[0].keys():
-#     #     print(i)
-#
-#     print(modelname)
-#     for item_data in request_data:
-#             if item_data['id'] in updateable_ids:
-#                 item_instance = modelname.objects.filter(pk=item_data['id'])
-#
-#                 for i in request_data[0].keys():
-#                         print(i)
-#                         #item_instance.i = item_instance.get(i, item_instance.i)
+def multipledata(object,request_data,object_data,modelname):
+    request_data_ids = list()
+    for item_id in request_data:
+        if item_id['id']:
+            request_data_ids.append(item_id['id'])
+
+    object_ids = list()
+    for item in object_data:
+        object_ids.append(item.id)
+
+    updateable_ids = list(set(request_data_ids) & set(object_ids))
+    deleteable_ids = list(set(object_ids) - set(request_data_ids))
+
+    #print(modelname)
+    for item_data in request_data:
+            if item_data['id'] in updateable_ids:
+                item_instance = modelname.objects.filter(pk=item_data['id'])
+
+                for i in request_data[0].keys():
+                        print(i)
+                        #item_instance.i = item_instance.get(i, item_instance.i)
 
 
 
@@ -308,12 +305,23 @@ class VendorReadSerializer(ModelSerializer):
 
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     status = serializers.BooleanField(default=True)
-    vendor_address = VendorAddressSerializer(many=True)
-    vendor_account = VendorAccountSerializer(many=True)
+    vendor_address = serializers.SerializerMethodField()
+    vendor_account = serializers.SerializerMethodField()
+
+    def get_vendor_address(self, obj):
+        qs = VendorAddress.objects.filter(is_deleted=False)
+        serializer = VendorAddressSerializer(instance=qs,many=True)
+        return serializer.data
+
+    def get_vendor_account(self,obj):
+        qs = VendorAccount.objects.filter(is_deleted=False)
+        serializer = VendorAccountSerializer(instance=qs,many=True)
+        return serializer.data
 
 
     class Meta:
         model = Vendor
         fields = ['id','vendor_fullname','vendor_type','company','pan_no','gst_no','cin_no','status','created_at','created_by'
                   ,'is_deleted','vendor_address','vendor_account']
+
 
