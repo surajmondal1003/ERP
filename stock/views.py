@@ -29,6 +29,26 @@ class StockReadView(ListAPIView):
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('company__company_name', 'branch__branch_name', 'storage_location__storage_address', 'storage_bin__bin_no')
+
+    def get_queryset(self):
+
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            if order_by and order_by.lower() == 'desc' and field_name:
+                queryset = Stock.objects.all().order_by('-' + field_name)
+            elif order_by and order_by.lower() == 'asc' and field_name:
+                queryset = Stock.objects.all().order_by(field_name)
+            else:
+                queryset = Stock.objects.all().order_by('-id')
+            return queryset
+
+        except Exception as e:
+            raise
+
 
 class StocktReadDetailView(RetrieveAPIView):
     queryset = Stock.objects.all()
