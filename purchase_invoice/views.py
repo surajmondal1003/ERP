@@ -74,10 +74,6 @@ class PurchaseInvoiceMatser(ListCreateAPIView):
 
 
 
-
-
-
-
 class PurchaseInvoiceUpdate(RetrieveUpdateDestroyAPIView):
     queryset = PurchaseInvoice.objects.all()
     serializer_class = PurchaseInvoiceSerializer
