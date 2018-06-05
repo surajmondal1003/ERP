@@ -35,6 +35,9 @@ class GRNReadViewList(ListAPIView):
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('grn_map__grn_no','company__company_name','pur_org__name','pur_grp__name','vendor__vendor_fullname',
+                     'vendor_address__address','po_order__purchase_order_map__purchase_order_no')
 
 
     def get_queryset(self):
@@ -44,8 +47,8 @@ class GRNReadViewList(ListAPIView):
 
             if order_by and order_by.lower() == 'desc' and field_name:
                 queryset = GRN.objects.filter(is_deleted=False).order_by('-' + field_name)
-            elif order_by and order_by.lower(is_deleted=False) == 'asc' and field_name:
-                queryset = GRN.objects.filter().order_by(field_name)
+            elif order_by and order_by.lower() == 'asc' and field_name:
+                queryset = GRN.objects.filter(is_deleted=False).order_by(field_name)
             else:
                 queryset = GRN.objects.filter(is_deleted=False).order_by('-id')
             return queryset
