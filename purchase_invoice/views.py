@@ -33,8 +33,10 @@ class PurchaseInvoiceReadView(ListAPIView):
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
-
-
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('company__company_name', 'pur_org__name_', 'pur_grp__name', 'vendor__vendor_fullname',
+    'vendor_address__address', 'po_order__purchase_order_map__purchase_order_no','pur_invoice_map__purchase_inv_no',
+                     'grn__grn_map__grn_no')
 
     def get_queryset(self):
         try:

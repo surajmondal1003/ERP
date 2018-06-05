@@ -34,6 +34,10 @@ class PaymentReadView(ListAPIView):
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('company__company_name','vendor__vendor_fullname',
+                     'po_order__purchase_order_map__purchase_order_no',
+                     'pur_inv__pur_invoice_map__purchase_inv_no','payment_map__payment_no')
 
 
     def get_queryset(self):
