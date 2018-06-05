@@ -324,4 +324,3 @@ class VendorReadSerializer(ModelSerializer):
         fields = ['id','vendor_fullname','vendor_type','company','pan_no','gst_no','cin_no','status','created_at','created_by'
                   ,'is_deleted','vendor_address','vendor_account']
 
-
