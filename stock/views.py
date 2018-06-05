@@ -30,7 +30,7 @@ class StockReadView(ListAPIView):
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('company__company_name', 'branch__branch_name', 'storage_location__storage_address', 'storage_bin__bin_no')
+    search_fields = ('company__company_name', 'branch__branch_name', 'storage_location__storage_address', 'storage_bin__bin_no','quantity')
 
     def get_queryset(self):
 
