@@ -31,7 +31,7 @@ class SalesOrgViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('name',)
+    search_fields = ('name','description')
 
     def get_queryset(self):
         try:
@@ -57,7 +57,7 @@ class SalesGroupViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('name',)
+    search_fields = ('name', 'description')
 
     def get_queryset(self):
         try:
