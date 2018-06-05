@@ -34,6 +34,23 @@ class PurchaseOrgViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name','description')
 
+    def get_queryset(self):
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            if order_by and order_by.lower() == 'desc' and field_name:
+                queryset = PurchaseOrg.objects.all().order_by('-' + field_name)
+            elif order_by and order_by.lower() == 'asc' and field_name:
+                queryset = PurchaseOrg.objects.all().order_by(field_name)
+            else:
+                queryset = PurchaseOrg.objects.all().order_by('-id')
+            return queryset
+
+        except Exception as e:
+            raise
+
+
 
 class PurchaseGroupViewSet(viewsets.ModelViewSet):
     queryset = PurchaseGroup.objects.all()
@@ -43,6 +60,22 @@ class PurchaseGroupViewSet(viewsets.ModelViewSet):
     pagination_class = ErpPageNumberPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name','description')
+
+    def get_queryset(self):
+        try:
+            order_by = self.request.query_params.get('order_by', None)
+            field_name = self.request.query_params.get('field_name', None)
+
+            if order_by and order_by.lower() == 'desc' and field_name:
+                queryset = PurchaseGroup.objects.all().order_by('-' + field_name)
+            elif order_by and order_by.lower() == 'asc' and field_name:
+                queryset = PurchaseGroup.objects.all().order_by(field_name)
+            else:
+                queryset = PurchaseGroup.objects.all().order_by('-id')
+            return queryset
+
+        except Exception as e:
+            raise
 
 
 class PurchaseOrgMappingViewSet(viewsets.ModelViewSet):
