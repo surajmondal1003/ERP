@@ -164,7 +164,7 @@ class VendorSerializer(ModelSerializer):
             instance.save()
 
 
-            multipledata(instance,vendor_address_data,vendor_addresses,VendorAddress)
+            multipledata(instance,vendor_address_data,vendor_addresses,VendorAddress,VendorAddressSerializer)
 
 
             # vendor_addresses_ids=list()
@@ -238,9 +238,6 @@ class VendorSerializer(ModelSerializer):
             #     account.is_deleted = True
             #     account.save()
 
-
-
-
             return instance
 
 
@@ -248,33 +245,33 @@ class VendorSerializer(ModelSerializer):
 
 
 
-# def multipledata(object,request_data,object_data,modelname):
-#     request_data_ids = list()
-#     for item_id in request_data:
-#         if item_id['id']:
-#             request_data_ids.append(item_id['id'])
-#
-#     object_ids = list()
-#     for item in object_data:
-#         object_ids.append(item.id)
-#
-#     updateable_ids = list(set(request_data_ids) & set(object_ids))
-#     deleteable_ids = list(set(object_ids) - set(request_data_ids))
-#
-#     #print(modelname)
-#     for item_data in request_data:
-#             if item_data['id'] in updateable_ids:
-#                 item_instance = modelname.objects.filter(pk=item_data['id'])
-#
-#                 print(request_data)
-#                 for i in request_data[0].keys():
-#                     item_data_ins = "item_instance.{}=item_instance.get({},item_instance.{})". format(i,item_data[i],i)
-#                     print(item_data_ins)
-#
-#                     #item_instance=(item_data_ins).save()
-#                     item_serializer=VendorSerializer(data=item_data_ins)
-#                     if item_serializer.is_valid():
-#                         item_serializer.save()
+def multipledata(object,request_data,object_data,modelname,serializer_name):
+    request_data_ids = list()
+    for item_id in request_data:
+        if item_id['id']:
+            request_data_ids.append(item_id['id'])
+
+    object_ids = list()
+    for item in object_data:
+        object_ids.append(item.id)
+
+    updateable_ids = list(set(request_data_ids) & set(object_ids))
+    deleteable_ids = list(set(object_ids) - set(request_data_ids))
+
+    #print(modelname)
+    for item_data in request_data:
+            if item_data['id'] in updateable_ids:
+                item_instance = modelname.objects.filter(pk=item_data['id'])
+
+                for i in request_data[0].keys():
+                    item_data_ins = "item_instance.{}=item_instance.get({},item_instance.{})". format(i,item_data[i],i)
+                    #print(item_data_ins)
+                    #item_instance=(item_data_ins).save()
+                    item_serializer=serializer_name(data=item_data_ins)
+                    print(item_serializer)
+                    if item_serializer.is_valid():
+                        print('update')
+                        item_serializer.save()
 
 
 
@@ -314,12 +311,12 @@ class VendorReadSerializer(ModelSerializer):
     vendor_account = serializers.SerializerMethodField()
 
     def get_vendor_address(self, obj):
-        qs = VendorAddress.objects.filter(is_deleted=False)
+        qs = VendorAddress.objects.filter(vendor=obj,is_deleted=False)
         serializer = VendorAddressSerializer(instance=qs,many=True)
         return serializer.data
 
     def get_vendor_account(self,obj):
-        qs = VendorAccount.objects.filter(is_deleted=False)
+        qs = VendorAccount.objects.filter(vendor=obj,is_deleted=False)
         serializer = VendorAccountSerializer(instance=qs,many=True)
         return serializer.data
 

@@ -109,13 +109,6 @@ class VendorMatserUpdate(RetrieveUpdateDestroyAPIView):
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
 
-    def retrieve(self, request, *args, **kwargs):
-        vendor_id = self.kwargs['pk']
-        #queryset = Vendor.objects.filter(id=vendor_id, vendor_address__is_deleted=False)
-        queryset = Vendor.objects.filter(id=vendor_id, vendor_address__is_deleted=False,vendor_account__is_deleted=False)
-        serializer = VendorReadSerializer(queryset,many=True)
-        #print(queryset.query)
-        return Response(serializer.data[0])
 
 
 class VendorMatserStatusUpdate(RetrieveUpdateAPIView):
@@ -129,7 +122,7 @@ class VendorReadDetailView(RetrieveAPIView):
     serializer_class = VendorReadSerializer
     # permission_classes = [IsAuthenticated,IsAdminUser]
     authentication_classes = [TokenAuthentication]
-    queryset = Vendor.objects.filter(vendor_address__is_deleted=False)
+    queryset = Vendor.objects.filter(vendor_address__is_deleted=False,vendor_account__is_deleted=False)
 
 
     def retrieve(self, request, *args, **kwargs):

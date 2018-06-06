@@ -8,10 +8,11 @@ class MaterialTypeSerializer(ModelSerializer):
     material_type = serializers.CharField(validators=[UniqueValidator(queryset=MaterialType.objects.all())])
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     status = serializers.BooleanField(default=True)
+    description=serializers.CharField(required=False,allow_null=True,allow_blank=True)
 
     class Meta:
         model = MaterialType
-        fields = ['id','material_type','status','created_at','created_by']
+        fields = ['id','material_type','description','status','created_at','created_by']
 
 
 class MaterialUOMSerializer(ModelSerializer):

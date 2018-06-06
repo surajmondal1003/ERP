@@ -7,6 +7,7 @@ from purchaseorggroup.models import PurchaseOrg,PurchaseGroup
 
 class MaterialType(models.Model):
     material_type=models.CharField(max_length=100)
+    description=models.TextField()
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
