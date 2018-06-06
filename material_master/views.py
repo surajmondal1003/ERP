@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView,RetrieveAPIView
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
@@ -90,6 +90,26 @@ class PurchaseOrganisationSpecificMaterialList(ListAPIView):
         org_id = self.kwargs['org_id']
         return Material.objects.filter(material_purchase_org__pur_org=org_id)
 
+
+
+
+class MaterialReadDetailView(RetrieveAPIView):
+    serializer_class = MaterialReadSerializer
+    # permission_classes = [IsAuthenticated,IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+    queryset = Material.objects.filter(material_uom__is_deleted=False,material_tax__is_deleted=False,material_purchase_org__is_deleted=False,
+                                       material_purchase_grp__is_deleted=False)
+
+
+    def retrieve(self, request, *args, **kwargs):
+        vendor_id = self.kwargs['pk']
+        #queryset = Vendor.objects.filter(id=vendor_id, vendor_address__is_deleted=False)
+        queryset = Material.objects.filter(material_uom__is_deleted=False, material_tax__is_deleted=False,
+                                           material_purchase_org__is_deleted=False,
+                                           material_purchase_grp__is_deleted=False)
+        serializer = MaterialReadSerializer(queryset,many=True)
+        #print(queryset.query)
+        return Response(serializer.data[0])
 
 
 

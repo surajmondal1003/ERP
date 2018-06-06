@@ -14,6 +14,7 @@ urlpatterns = [
     path('material_master/', views.MaterialMatser.as_view()),
     path('material_master/<pk>/', views.MaterialMatserUpdate.as_view()),
     path('specific_organisation_material/<org_id>/', views.PurchaseOrganisationSpecificMaterialList.as_view()),
+    path('all_material_master/<pk>/', views.MaterialReadDetailView.as_view()),
 
 
 

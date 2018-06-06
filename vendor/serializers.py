@@ -164,79 +164,79 @@ class VendorSerializer(ModelSerializer):
             instance.save()
 
 
-            multipledata(instance,vendor_address_data,vendor_addresses,VendorAddress,VendorAddressSerializer)
+            #multipledata(instance,vendor_address_data,vendor_addresses,VendorAddress,VendorAddressSerializer)
 
 
-            # vendor_addresses_ids=list()
-            # for vendor_address_id in vendor_address_data:
-            #     if vendor_address_id['id']:
-            #         vendor_addresses_ids.append(vendor_address_id['id'])
-            #
-            # vendor_addresses_instance_ids=list()
-            # for item in vendor_addresses:
-            #     vendor_addresses_instance_ids.append(item.id)
-            #
-            # updateable_ids = list(set(vendor_addresses_ids) & set(vendor_addresses_instance_ids))
-            # deleteable_ids = list(set(vendor_addresses_instance_ids) - set(vendor_addresses_ids))
-            #
-            #
-            #
-            # for address_data in vendor_address_data:
-            #     if address_data['id'] in updateable_ids:
-            #         address = VendorAddress.objects.get(pk=address_data['id'])
-            #
-            #         address.address=address_data.get('address', address.address)
-            #         address.state=address_data.get('state', address.state)
-            #         address.city=address_data.get('city', address.city)
-            #         address.pincode=address_data.get('pincode', address.pincode)
-            #         address.mobile=address_data.get('mobile', address.mobile)
-            #         address.email=address_data.get('email', address.email)
-            #         address.designation=address_data.get('designation', address.designation)
-            #         address.contact_person=address_data.get('contact_person', address.contact_person)
-            #         address.is_deleted=address_data.get('is_deleted', address.is_deleted)
-            #         address.save()
-            #
-            #     elif address_data['id'] is None:
-            #         VendorAddress.objects.create(vendor=instance, **address_data)
-            #
-            # for delete_id in deleteable_ids:
-            #     address = VendorAddress.objects.get(pk=delete_id)
-            #     address.is_deleted = True
-            #     address.save()
-            #
-            #
-            # vendor_accounts_ids = list()
-            # for vendor_account_id in vendor_account_data:
-            #     if vendor_account_id['id']:
-            #         vendor_accounts_ids.append(vendor_account_id['id'])
-            #
-            # vendor_accounts_instance_ids = list()
-            # for item in vendor_accounts:
-            #     vendor_accounts_instance_ids.append(item.id)
-            #
-            # account_updateable_ids = list(set(vendor_accounts_ids) & set(vendor_accounts_instance_ids))
-            # account_deleteable_ids = list(set(vendor_accounts_instance_ids) - set(vendor_accounts_ids))
-            #
-            #
-            #
-            # for account_data in vendor_account_data:
-            #     if account_data['id'] in account_updateable_ids:
-            #         account = VendorAccount.objects.get(pk=account_data['id'])
-            #
-            #         account.bank_name = account_data.get('bank_name', account.bank_name)
-            #         account.branch_name = account_data.get('branch_name', account.branch_name)
-            #         account.account_no = account_data.get('account_no', account.account_no)
-            #         account.ifsc_code = account_data.get('ifsc_code', account.ifsc_code)
-            #         account.is_deleted = account_data.get('is_deleted', account.is_deleted)
-            #         account.save()
-            #
-            #     elif account_data['id'] is None:
-            #         VendorAccount.objects.create(vendor=instance, **account_data)
-            #
-            # for delete_id in account_deleteable_ids:
-            #     account = VendorAccount.objects.get(pk=delete_id)
-            #     account.is_deleted = True
-            #     account.save()
+            vendor_addresses_ids=list()
+            for vendor_address_id in vendor_address_data:
+                if vendor_address_id['id']:
+                    vendor_addresses_ids.append(vendor_address_id['id'])
+
+            vendor_addresses_instance_ids=list()
+            for item in vendor_addresses:
+                vendor_addresses_instance_ids.append(item.id)
+
+            updateable_ids = list(set(vendor_addresses_ids) & set(vendor_addresses_instance_ids))
+            deleteable_ids = list(set(vendor_addresses_instance_ids) - set(vendor_addresses_ids))
+
+
+
+            for address_data in vendor_address_data:
+                if address_data['id'] in updateable_ids:
+                    address = VendorAddress.objects.get(pk=address_data['id'])
+
+                    address.address=address_data.get('address', address.address)
+                    address.state=address_data.get('state', address.state)
+                    address.city=address_data.get('city', address.city)
+                    address.pincode=address_data.get('pincode', address.pincode)
+                    address.mobile=address_data.get('mobile', address.mobile)
+                    address.email=address_data.get('email', address.email)
+                    address.designation=address_data.get('designation', address.designation)
+                    address.contact_person=address_data.get('contact_person', address.contact_person)
+                    address.is_deleted=address_data.get('is_deleted', address.is_deleted)
+                    address.save()
+
+                elif address_data['id'] is None:
+                    VendorAddress.objects.create(vendor=instance, **address_data)
+
+            for delete_id in deleteable_ids:
+                address = VendorAddress.objects.get(pk=delete_id)
+                address.is_deleted = True
+                address.save()
+
+
+            vendor_accounts_ids = list()
+            for vendor_account_id in vendor_account_data:
+                if vendor_account_id['id']:
+                    vendor_accounts_ids.append(vendor_account_id['id'])
+
+            vendor_accounts_instance_ids = list()
+            for item in vendor_accounts:
+                vendor_accounts_instance_ids.append(item.id)
+
+            account_updateable_ids = list(set(vendor_accounts_ids) & set(vendor_accounts_instance_ids))
+            account_deleteable_ids = list(set(vendor_accounts_instance_ids) - set(vendor_accounts_ids))
+
+
+
+            for account_data in vendor_account_data:
+                if account_data['id'] in account_updateable_ids:
+                    account = VendorAccount.objects.get(pk=account_data['id'])
+
+                    account.bank_name = account_data.get('bank_name', account.bank_name)
+                    account.branch_name = account_data.get('branch_name', account.branch_name)
+                    account.account_no = account_data.get('account_no', account.account_no)
+                    account.ifsc_code = account_data.get('ifsc_code', account.ifsc_code)
+                    account.is_deleted = account_data.get('is_deleted', account.is_deleted)
+                    account.save()
+
+                elif account_data['id'] is None:
+                    VendorAccount.objects.create(vendor=instance, **account_data)
+
+            for delete_id in account_deleteable_ids:
+                account = VendorAccount.objects.get(pk=delete_id)
+                account.is_deleted = True
+                account.save()
 
             return instance
 
@@ -265,16 +265,13 @@ def multipledata(object,request_data,object_data,modelname,serializer_name):
 
                 for i in request_data[0].keys():
                     item_data_ins = "item_instance.{}=item_instance.get({},item_instance.{})". format(i,item_data[i],i)
-                    #print(item_data_ins)
+                    print(type(serializer_name))
                     #item_instance=(item_data_ins).save()
                     item_serializer=serializer_name(data=item_data_ins)
-                    print(item_serializer)
+                    #print(item_serializer)
                     if item_serializer.is_valid():
                         print('update')
                         item_serializer.save()
-
-
-
 
 
 class VendorNameSerializer(ModelSerializer):
